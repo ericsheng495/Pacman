@@ -13,7 +13,8 @@ public class ConfigScreen extends AppCompatActivity {
     ImageButton moreDifficulty;
     ImageButton lessDifficulty;
     TextView difficultyLevel;
-
+    TextView difficultyDescription;
+    String[] diffArr = {"3 Ghosts and Slow Speed", "4 Ghosts and Normal Speed", "5 Ghosts and High Speed"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,28 +23,29 @@ public class ConfigScreen extends AppCompatActivity {
         difficultyLevel = (TextView) findViewById(R.id.difficultyLevel);
         moreDifficulty = (ImageButton) findViewById(R.id.moreDifficulty);
         lessDifficulty = (ImageButton) findViewById(R.id.lessDifficulty);
-
+        difficultyDescription = (TextView) findViewById(R.id.difficultyDescription);
+        difficultyDescription.setText(diffArr[difficulty]);
         moreDifficulty.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (difficulty == 3) {
-                    difficulty = 3;
-                } else {
+                if (difficulty < 2) {
                     difficulty++;
+                    difficultyLevel.setText(String.format("%d", difficulty));
+                    difficultyDescription.setText(diffArr[difficulty]);
                 }
-                difficultyLevel.setText(String.format("%d", difficulty));
+
             }
         });
 
         lessDifficulty.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (difficulty == 0) {
-                    difficulty = 0;
-                } else {
+                if (difficulty > 0) {
                     difficulty--;
+                    difficultyLevel.setText(String.format("%d", difficulty));
+                    difficultyDescription.setText(diffArr[difficulty]);
                 }
-                difficultyLevel.setText(String.format("%d", difficulty));
+
             }
         });
     }
