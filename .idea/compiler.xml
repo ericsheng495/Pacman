@@ -1,20 +1,6 @@
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="11" />
   </component>
-=======
->>>>>>> feature/config-screen
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="CompilerConfiguration">
-    <bytecodeTargetLevel target="11" />
-  </component>
-<<<<<<< HEAD
-=======
->>>>>>> feature/config-screen-sprite
->>>>>>> feature/config-screen
 </project>

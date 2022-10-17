@@ -4,12 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class GameActivity extends AppCompatActivity implements View.OnClickListener {
     private String[] difficultyLevels = {"Easy", "Normal", "Hard"};
+    private String[] lives = {"5", "3", "2"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,8 +26,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         Button mainMenu = findViewById(R.id.mainButton);
         mainMenu.setOnClickListener(this);
 
-        //TextView livesText = findViewById(R.id.livesText);
-        //livesText.setText(getString(R.string.lives));
+        TextView livesText = findViewById(R.id.livesText);
+        livesText.setText("Lives: " + lives[difficulty]);
 
         TextView playerNameText = findViewById(R.id.playerNameText);
         playerNameText.setText(name);
@@ -38,6 +40,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
         TextView roundText = findViewById(R.id.roundText);
         roundText.setText(getString(R.string.round));
+
+        ImageView spriteView = (ImageView) findViewById(R.id.spriteInGame);
+        spriteView.setImageResource(getResources().getIdentifier("@android:drawable/" + sprite, null, getPackageName()));
 
 
     }
