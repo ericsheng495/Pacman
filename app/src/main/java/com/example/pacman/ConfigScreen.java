@@ -19,7 +19,7 @@ public class ConfigScreen extends AppCompatActivity {
     private ImageButton lessDifficulty;
     private TextView difficultyLevel;
     private TextView difficultyDescription;
-    private String[] diffArr = {"3 Ghosts and Slow Speed", "4 Ghosts and Normal Speed", "5 Ghosts and High Speed"};
+    private String[] diffArr = {"3 Ghosts, Slow Speed, 5 Lives", "4 Ghosts, Normal Speed, 3 Lives", "5 Ghosts, High Speed, 2 Lives"};
     private String name;
     private EditText nameInput;
     private Button nextButton;
@@ -30,6 +30,7 @@ public class ConfigScreen extends AppCompatActivity {
             "ic_menu_delete",
             "ic_menu_directions"
     };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
