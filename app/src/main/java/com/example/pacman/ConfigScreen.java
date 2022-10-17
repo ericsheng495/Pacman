@@ -3,6 +3,7 @@ package com.example.pacman;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -42,20 +43,7 @@ public class ConfigScreen extends AppCompatActivity {
         difficultyDescription.setText(diffArr[difficulty]);
         nameInput = (EditText) findViewById(R.id.nameInput);
         nextButton = (Button) findViewById(R.id.goNext);
-        nextButton.setOnClickListener((view) ->  {
-            if (nameInput.getText().toString() == null) {
-                Toast.makeText(this, "Your name is null! Setting to default.",
-                        Toast.LENGTH_SHORT).show();
-                //set name to default
-            } else if (nameInput.getText().toString().equals(" ")
-                    || nameInput.getText().toString().equals("")) {
-                Toast.makeText(this, "Your name is empty! Setting to default.",
-                        Toast.LENGTH_SHORT).show();
-                //set name to default
-            } else {
-                name = nameInput.getText().toString();
-            }
-        });
+
         moreDifficulty.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,6 +73,26 @@ public class ConfigScreen extends AppCompatActivity {
         spritePrevious.setClickable(true);
         spriteNext.setOnClickListener((view) -> setPlayerSprite(1));
         spritePrevious.setOnClickListener((view) -> setPlayerSprite(-1));
+
+        nextButton.setOnClickListener((view) ->  {
+            if (nameInput.getText().toString() == null) {
+                Toast.makeText(this, "Your name is null! Setting to default.",
+                        Toast.LENGTH_SHORT).show();
+                //set name to default
+            } else if (nameInput.getText().toString().equals(" ")
+                    || nameInput.getText().toString().equals("")) {
+                Toast.makeText(this, "Your name is empty! Setting to default.",
+                        Toast.LENGTH_SHORT).show();
+                //set name to default
+            } else {
+                name = nameInput.getText().toString();
+                Intent intent = new Intent(this, GameActivity.class);
+                intent.putExtra("Name", name);
+                intent.putExtra("Difficulty", difficulty);
+                intent.putExtra("sprite_path", sprites[currentSprite]);
+                startActivity(intent);
+            }
+        });
     }
 
     void setPlayerSprite(int next) {

@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case (R.id.playButton):
                 //Switch to Config Screen, Game Screen for now.
                 //Change GameActivity.class to Config class
-                Intent intent = new Intent(getApplicationContext(), GameActivity.class);
+                Intent intent = new Intent(getApplicationContext(), ConfigScreen.class);
                 startActivity(intent);
 
                 break;

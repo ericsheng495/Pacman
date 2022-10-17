@@ -9,30 +9,35 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class GameActivity extends AppCompatActivity implements View.OnClickListener {
-
+    private String[] difficultyLevels = {"Easy", "Normal", "Hard"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+        Intent intent = getIntent();
+        String name = intent.getStringExtra("Name");
+        int difficulty = intent.getIntExtra("Difficulty", 0);
+        String sprite = intent.getStringExtra("sprite_path");
+
+
 
         Button mainMenu = findViewById(R.id.mainButton);
         mainMenu.setOnClickListener(this);
 
-        //Sets text values based on input values from strings.xml
-        /*TextView livesText = findViewById(R.id.livesText);
-        livesText.setText(getString(R.string.lives));
+        //TextView livesText = findViewById(R.id.livesText);
+        //livesText.setText(getString(R.string.lives));
 
         TextView playerNameText = findViewById(R.id.playerNameText);
-        playerNameText.setText(getString(R.string.playerName));
+        playerNameText.setText(name);
 
         TextView scoreText = findViewById(R.id.scoreText);
         scoreText.setText(getString(R.string.score));
 
         TextView difficultText = findViewById(R.id.difficultText);
-        difficultText.setText(getString(R.string.difficulty));
+        difficultText.setText("Difficulty: " + difficultyLevels[difficulty]);
 
         TextView roundText = findViewById(R.id.roundText);
-        roundText.setText(getString(R.string.round));*/
+        roundText.setText(getString(R.string.round));
 
 
     }
