@@ -14,7 +14,7 @@ public class ConfigScreen extends AppCompatActivity {
     ImageButton lessDifficulty;
     TextView difficultyLevel;
     TextView difficultyDescription;
-    String[] diffArr = {"3 Ghosts and Slow Speed", "4 Ghosts and Normal Speed", "5 Ghosts and High Speed"};
+    String[] diffArr = {"3 Ghosts, Slow Speed, 5 Lives", "4 Ghosts, Normal Speed, 3 Lives", "5 Ghosts, High Speed, 2 Lives"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
