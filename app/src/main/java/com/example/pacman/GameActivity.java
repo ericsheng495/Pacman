@@ -19,7 +19,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         mainMenu.setOnClickListener(this);
 
         //Sets text values based on input values from strings.xml
-        TextView livesText = findViewById(R.id.livesText);
+        /*TextView livesText = findViewById(R.id.livesText);
         livesText.setText(getString(R.string.lives));
 
         TextView playerNameText = findViewById(R.id.playerNameText);
@@ -32,7 +32,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         difficultText.setText(getString(R.string.difficulty));
 
         TextView roundText = findViewById(R.id.roundText);
-        roundText.setText(getString(R.string.round));
+        roundText.setText(getString(R.string.round));*/
 
 
     }
