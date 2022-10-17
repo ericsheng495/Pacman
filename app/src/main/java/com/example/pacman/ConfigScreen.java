@@ -34,6 +34,6 @@ import android.widget.ImageView;
         }
 
         ImageView sprite = (ImageView) findViewById(R.id.playerSprite);
-        sprite.setImageResource(getResources().getIdentifier(sprites[currentSprite], "drawable", getPackageName()));
+        sprite.setImageResource(getResources().getIdentifier("@android:drawable/" + sprites[currentSprite], null, getPackageName()));
     }
 }
