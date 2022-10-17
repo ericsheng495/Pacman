@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ConfigScreen">
 
-<<<<<<< HEAD
     <ImageButton
         android:id="@+id/lessDifficulty"
         android:layout_width="wrap_content"
@@ -76,7 +75,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/difficultyLevel" />
-=======
     <ImageView
         android:id="@+id/spriteNext"
         android:layout_width="wrap_content"
@@ -112,5 +110,5 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_menu_edit"
         app:layout_constraintVertical_bias=".7"/>
->>>>>>> feature/config-screen-sprite
+
 </androidx.constraintlayout.widget.ConstraintLayout>
