@@ -5,21 +5,27 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.media.Image;
 import android.widget.ImageView;
+import android.widget.Toast;
 public class ConfigScreen extends AppCompatActivity {
 
-    int difficulty = 0;
-    ImageButton moreDifficulty;
-    ImageButton lessDifficulty;
-    TextView difficultyLevel;
-    TextView difficultyDescription;
-    String[] diffArr = {"3 Ghosts and Slow Speed", "4 Ghosts and Normal Speed", "5 Ghosts and High Speed"};
+    private int difficulty = 0;
+    private ImageButton moreDifficulty;
+    private ImageButton lessDifficulty;
+    private TextView difficultyLevel;
+    private TextView difficultyDescription;
+    private String[] diffArr = {"3 Ghosts and Slow Speed", "4 Ghosts and Normal Speed", "5 Ghosts and High Speed"};
+    private String name;
+    private EditText nameInput;
+    private Button nextButton;
 
-    int currentSprite = 0;
-    String[] sprites = {
+    private int currentSprite = 0;
+    private String[] sprites = {
             "ic_menu_edit",
             "ic_menu_delete",
             "ic_menu_directions"
@@ -34,6 +40,22 @@ public class ConfigScreen extends AppCompatActivity {
         lessDifficulty = (ImageButton) findViewById(R.id.lessDifficulty);
         difficultyDescription = (TextView) findViewById(R.id.difficultyDescription);
         difficultyDescription.setText(diffArr[difficulty]);
+        nameInput = (EditText) findViewById(R.id.nameInput);
+        nextButton = (Button) findViewById(R.id.goNext);
+        nextButton.setOnClickListener((view) ->  {
+            if (nameInput.getText().toString() == null) {
+                Toast.makeText(this, "Your name is null! Setting to default.",
+                        Toast.LENGTH_SHORT).show();
+                //set name to default
+            } else if (nameInput.getText().toString().equals(" ")
+                    || nameInput.getText().toString().equals("")) {
+                Toast.makeText(this, "Your name is empty! Setting to default.",
+                        Toast.LENGTH_SHORT).show();
+                //set name to default
+            } else {
+                name = nameInput.getText().toString();
+            }
+        });
         moreDifficulty.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
