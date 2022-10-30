@@ -5,11 +5,13 @@ import android.widget.ImageView;
 
 public class Pacman {
     private ImageView spriteView;
-    private float x_location = 150.0f;
-    private float y_location = 150.0f;
-    private float vel = 2.0f;
+    private int x_location = 0;
+    private int y_location = 0;
+    private final int MOVE_VEL = 2;
+    private int vel = 0;
     private int direction;
     private int next_direction;
+    private int lives = 3;
 
     public Pacman(Context context, String sprite) {
         direction = 0;
@@ -17,28 +19,51 @@ public class Pacman {
         spriteView.setImageResource(context.getResources().getIdentifier("@android:drawable/" + sprite, null, context.getPackageName()));
     }
 
+    public ImageView getImageView() {
+        return spriteView;
+    }
+
+    public void move() {
+        vel = MOVE_VEL;
+        switch (direction) {
+            case 0:
+                y_location -= vel;
+                break;
+            case 1:
+                x_location += vel;
+                break;
+            case 2:
+                x_location -= vel;
+                break;
+            case 3:
+                y_location += vel;
+                break;
+        }
+    }
+
+    public void turnDirection() { direction = next_direction; }
+
+    public void stop() {vel = 0;}
+
     public void update() {
         spriteView.setX(x_location);
         spriteView.setY(y_location);
     }
 
-    public ImageView getImageView() {
-        return spriteView;
-    }
 
-    public float getXloc() {
+    public int getXloc() {
         return x_location;
     }
 
-    public float getYloc() {
+    public int getYloc() {
         return y_location;
     }
 
-    public void setX_location(float x) {
-        this.x_location = x;
+    public void setX_location(int x_location) {
+        this.x_location = x_location;
     }
 
-    public void setY_location(float y_location) {
+    public void setY_location(int y_location) {
         this.y_location = y_location;
     }
 
@@ -58,20 +83,7 @@ public class Pacman {
         return next_direction;
     }
 
-    public void move() {
-        switch (direction) {
-            case 0:
-                y_location -= vel;
-                break;
-            case 1:
-                x_location += vel;
-                break;
-            case 2:
-                x_location -= vel;
-                break;
-            case 3:
-                y_location += vel;
-                break;
-        }
+    public int getLives() {
+        return lives;
     }
 }
