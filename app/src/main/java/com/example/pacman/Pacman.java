@@ -50,7 +50,7 @@ public class Pacman {
     }
 
     public void setDirection(Direction dir) {
-        this.direction = direction;
+        this.direction = dir;
     }
 
     public void setNext_direction(Direction next_direction) {

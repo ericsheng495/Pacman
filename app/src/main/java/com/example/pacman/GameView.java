@@ -92,11 +92,16 @@ public class GameView extends View {
         return mPoints[y][x];
     }
 
-    public void next() {
+    public void next(Direction nextDirection) {
         Point first = mPacMan.getPoint();
-        Point nextInDirection = getCurrNext(first);
-        Point next = getNext(first);
+        //Point nextInDirection = getCurrNext(first);
+        Point next = getNext(first, nextDirection);
 
+        if (nextDirection != mPacMan.getDirection() && next.type != PointType.WALL) {
+            mPacMan.setDirection(nextDirection);
+        }
+
+        next = getCurrNext(first);
         if (next.type != PointType.WALL) {
             next.type = PointType.PACMAN;
             first.type = PointType.EMPTY;
@@ -142,11 +147,11 @@ public class GameView extends View {
         return getPoint(x, y);
     }
 
-    private Point getNext(Point point) {
+    private Point getNext(Point point, Direction nextDirection) {
         int x = point.x;
         int y = point.y;
 
-        switch (mPacMan.getNext_direction()) {
+        switch (nextDirection) {
             case UP:
                 y = y == 0 ? MAP_SIZE - 1 : y - 1;
                 break;

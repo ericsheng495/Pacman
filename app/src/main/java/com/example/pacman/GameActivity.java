@@ -21,6 +21,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private final Handler mHandler = new Handler();
     GestureDetector gestureDetector;
     Pacman pacman;
+    Direction nextDirection = Direction.RIGHT;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,13 +35,13 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         mGameView.init(pacman);
 
         findViewById(R.id.up_button).setOnClickListener(v ->
-                pacman.setNext_direction(Direction.UP));
+                nextDirection = Direction.UP);
         findViewById(R.id.down_button).setOnClickListener(v ->
-                pacman.setNext_direction(Direction.DOWN));
+                nextDirection = Direction.DOWN);
         findViewById(R.id.left_button).setOnClickListener(v ->
-                pacman.setNext_direction(Direction.LEFT));
+                nextDirection = Direction.LEFT);
         findViewById(R.id.right_button).setOnClickListener(v ->
-                pacman.setNext_direction(Direction.RIGHT));
+                nextDirection = Direction.RIGHT);
 
         Button mainMenu = findViewById(R.id.mainButton);
         mainMenu.setOnClickListener(this);
@@ -68,22 +69,22 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
                 if (e1.getX() - e2.getX() > 220 && Math.abs(velocityX) > 240) {
                     //Toast.makeText(GameActivity.this, "left", Toast.LENGTH_SHORT).show();
-                    pacman.setNext_direction(Direction.LEFT); //swipe left
+                    nextDirection = Direction.LEFT; //swipe left
                     //difficultText.setText("" +2);
                     return false;
                 } else if (e2.getX() - e1.getX() > 220 && Math.abs(velocityX) > 240) {
-                    pacman.setNext_direction(Direction.RIGHT); //swipe right
+                    nextDirection = Direction.RIGHT; //swipe right
                     //difficultText.setText("" +1);
                     return false;
                 }
 
                 if (e1.getY() - e2.getY() > 200 && Math.abs(velocityY) > 240) {
-                    pacman.setNext_direction(Direction.UP); //swipe up
+                    nextDirection = Direction.UP; //swipe up
                     //difficultText.setText("" +0);
                     return false;
                 } else if (e2.getY() - e1.getY() > 200 && Math.abs(velocityY) > 240) {
                     //difficultText.setText("" +3);
-                    pacman.setNext_direction(Direction.DOWN); //swipe down
+                    nextDirection = Direction.DOWN; //swipe down
                     return false;
                 }
                 return false;
@@ -120,7 +121,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 try {
                     Thread.sleep(delay);
                     if (count % SPEED == 0) {
-                        mGameView.next();
+                        //pacman.setNext_direction(nextDirection);
+                        mGameView.next(nextDirection);
                         mHandler.post(mGameView::invalidate);
                     }
                 } catch (InterruptedException e) {
