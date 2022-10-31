@@ -10,7 +10,7 @@ public class Map implements Runnable {
     }
     @Override
     public void run() {
-        while (isRunning() == true) {
+        /*while (isRunning() == true) {
             int curr_x = pacman.getXloc();
             int curr_y = pacman.getYloc();
             int direction = pacman.getDirection();
@@ -21,7 +21,7 @@ public class Map implements Runnable {
             } else if (!canMoveInDirection(direction, curr_x, curr_y)){
                 stopPacman();
             }
-        }
+        }*/
 
 
 
@@ -57,6 +57,7 @@ public class Map implements Runnable {
                 return false;
             }
         }
+        return true;
     }
 
 
