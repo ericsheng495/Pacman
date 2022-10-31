@@ -24,17 +24,18 @@ public class GameView extends View {
         super(context, attrs, defStyleAttr);
     }
 
-    private static final String TAG = "GameView";
-
+    //Constants
     private static final int MAP_SIZE = 20;
     private static final int START_X = 5;
     private static final int START_Y = 10;
 
+    //Tiles and Pacman
     private final Point[][] mPoints = new Point[MAP_SIZE][MAP_SIZE];
     private final LinkedList<Point> mPacMan = new LinkedList<>();
     private Direction mDir;
-
     private boolean mGameOver = false;
+
+    //Sizing
     private int mBoxSize;
     private int mBoxPadding;
 
@@ -54,47 +55,29 @@ public class GameView extends View {
             }
         }
 
-        int[][] map_layout = new int[][]
-                {{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-                 {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                 {1,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,1},
-                 {1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1},
-                 {1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1},
-                 {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                 {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                 {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                 {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                 {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                 {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                 {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                 {1,0,0,0,0,0,0,0,0,0,4,0,0,0,0,0,0,0,0,1},
-                 {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                 {1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1},
-                 {1,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,1},
-                 {1,3,2,2,2,0,0,0,0,0,0,0,0,0,0,2,2,2,3,1},
-                 {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}};
+        Map_Layout map_layout = new Map_Layout();
+
+        int[][] mLayout = map_layout.getMap_layout();
 
         for (int i = 0; i < MAP_SIZE; i++) {
             for (int j = 0; j < MAP_SIZE; j++) {
-                if (map_layout[i][j] == 0) {
+                if (mLayout[i][j] == 0) {
                     Point point = getPoint(j, i);
                     point.type = PointType.EMPTY;
                 }
-                if (map_layout[i][j] == 1) {
+                if (mLayout[i][j] == 1) {
                     Point point = getPoint(j, i);
                     point.type = PointType.WALL;
                 }
-                if (map_layout[i][j] == 2) {
+                if (mLayout[i][j] == 2) {
                     Point point = getPoint(j, i);
                     point.type = PointType.PELLET;
                 }
-                if (map_layout[i][j] == 3) {
+                if (mLayout[i][j] == 3) {
                     Point point = getPoint(j, i);
                     point.type = PointType.POWER_PELLET;
                 }
-                if (map_layout[i][j] == 4) {
+                if (mLayout[i][j] == 4) {
                     Point point = getPoint(j, i);
                     point.type = PointType.PACMAN;
                     mPacMan.add(point);
@@ -138,12 +121,6 @@ public class GameView extends View {
     }
 
     public void setDirection(Direction dir) {
-        if ((dir == Direction.LEFT || dir == Direction.RIGHT) && (mDir == Direction.LEFT || mDir == Direction.RIGHT)) {
-            return;
-        }
-        if ((dir == Direction.UP || dir == Direction.DOWN) && (mDir == Direction.UP || mDir == Direction.DOWN)) {
-            return;
-        }
         mDir = dir;
     }
 
