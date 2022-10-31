@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Message;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +13,8 @@ import androidx.annotation.Nullable;
 
 import java.util.LinkedList;
 import java.util.Random;
+import android.os.Handler;
+import android.widget.TextView;
 
 public class GameView extends View {
     public GameView(Context context) {
@@ -41,12 +44,14 @@ public class GameView extends View {
 
     private Paint mPaint = new Paint();
 
+    private Handler mHandler;
     public void init(Pacman pacman) {
         mGameOver = false;
         mBoxSize = getContext().getResources().getDimensionPixelSize(R.dimen.game_size) / MAP_SIZE;
         mDir = Direction.RIGHT;
         mBoxPadding = mBoxSize / 20;
         mPacMan = pacman;
+        //mHandler = handler;
         initMap();
     }
     private void initMap() {
@@ -202,5 +207,7 @@ public class GameView extends View {
             }
 
         }
+        //TextView scoreText = findViewById(R.id.scoreText);
+        //scoreText.setText("" + mPacMan.score);
     }
 }

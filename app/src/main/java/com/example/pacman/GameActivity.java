@@ -3,6 +3,8 @@ package com.example.pacman;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,7 +20,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private GameView mGameView;
     private static int FPS = 5;
     private static int SPEED = 1;
-    private final Handler mHandler = new Handler();
+    private Handler mHandler = new Handler();
     GestureDetector gestureDetector;
     Pacman pacman;
     Direction nextDirection = Direction.RIGHT;
@@ -31,8 +33,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         int difficulty = intent.getIntExtra("Difficulty", 0);
         String sprite = intent.getStringExtra("sprite_path");
         Pacman pacman = new Pacman();
-        mGameView = findViewById(R.id.game_view);
-        mGameView.init(pacman);
 
         findViewById(R.id.up_button).setOnClickListener(v ->
                 nextDirection = Direction.UP);
@@ -91,6 +91,16 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
+         /*mHandler = new Handler(Looper.getMainLooper()) {
+            @Override
+            public void handleMessage(Message msg) {
+                if (msg.what == 0) {
+                    scoreText.setText("Score: " + pacman.score);
+                }
+            }
+        };*/
+        mGameView = findViewById(R.id.game_view);
+        mGameView.init(pacman);
         startGame();
     }
 
