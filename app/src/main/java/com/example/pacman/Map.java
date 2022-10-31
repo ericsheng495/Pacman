@@ -5,25 +5,23 @@ import android.content.Context;
 public class Map implements Runnable {
     private int[][] map_layout;
     Pacman pacman;
-    public Map(Context context, Pacman pacman) {
-        this.pacman = pacman;
-        map_layout = new int[20][20];
-    }
+    public Map(Context context) {
 
+    }
     @Override
     public void run() {
-        while (pacman.getLives() > 0) {
+        /*while (isRunning() == true) {
             int curr_x = pacman.getXloc();
             int curr_y = pacman.getYloc();
             int direction = pacman.getDirection();
             int next_direction = pacman.getNext_direction();
             // For now we will say 1 is a wall.
             if (direction != next_direction && canMoveInDirection(next_direction, curr_x, curr_y)) {
-                pacman.turnDirection();
+                turn_direction();
             } else if (!canMoveInDirection(direction, curr_x, curr_y)){
-                pacman.stop();
+                stopPacman();
             }
-        }
+        }*/
 
 
 
@@ -59,8 +57,9 @@ public class Map implements Runnable {
                 return false;
             }
         }
-        return false;
+        return true;
     }
 
 
 }
+

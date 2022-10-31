@@ -79,23 +79,6 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="70dp"
-        android:orientation="horizontal">
-
-
-        <TextView
-            android:id="@+id/movementDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="2.7"
-            android:textSize="15sp"
-            android:text="At the start of the game, both the player and the ghost AI (number varying depending on difficulty) will be loaded into a level similar to picture below. Both the player and the ghosts will be able to move directionally throughout this map, but will collide with the blue outlined boxes.
-" />
-    </LinearLayout>
-
     <ImageView
         android:id="@+id/spriteInGame"
         android:layout_width="wrap_content"
@@ -108,18 +91,45 @@
         app:layout_constraintVertical_bias=".03"
         tools:srcCompat="@tools:sample/avatars" />
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <com.example.pacman.GameView
+        android:id="@+id/game_view"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="100dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias=".8"
-        app:srcCompat="@drawable/pacman_map"
-        tools:layout_editor_absoluteX="63dp" />
-
-
+        app:layout_constraintTop_toTopOf="parent" />
+    <Button
+        android:id="@+id/up_button"
+        android:text="up"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/game_view"/>
+    <Button
+        android:id="@+id/left_button"
+        android:text="left"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        app:layout_constraintEnd_toStartOf="@+id/up_button"
+        app:layout_constraintTop_toBottomOf="@+id/up_button"
+        />
+    <Button
+        android:id="@+id/right_button"
+        android:text="right"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        app:layout_constraintStart_toEndOf="@+id/up_button"
+        app:layout_constraintTop_toBottomOf="@+id/up_button"
+        />
+    <Button
+        android:id="@+id/down_button"
+        android:text="down"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        app:layout_constraintEnd_toStartOf="@+id/right_button"
+        app:layout_constraintTop_toBottomOf="@+id/right_button"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>
