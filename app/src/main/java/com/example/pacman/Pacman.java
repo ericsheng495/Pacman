@@ -3,12 +3,34 @@ package com.example.pacman;
 public class Pacman {
     private int x_location;
     private int y_location;
-    private int direction;
-    private int next_direction;
+    private Direction direction;
+    private Direction next_direction;
+    private Point location;
+    private boolean superState;
 
+    public int score;
+    public int superTimer;
     public Pacman() {
-        this.x_location = 0;
-        this.y_location = 0;
+        this.score = 0;
+        this.direction = Direction.RIGHT;
+        this.next_direction = Direction.RIGHT;
+        this.superState = false;
+        superTimer = 0;
+    }
+
+    public void setPoint(Point point) {
+        location = point;
+    }
+
+    public Point getPoint() {
+        return location;
+    }
+
+    public void setSuper(boolean bool) {
+        superState = bool;
+    }
+    public boolean getSuper() {
+        return superState;
     }
 
     public int getXloc() {
@@ -27,19 +49,19 @@ public class Pacman {
         this.y_location = y_location;
     }
 
-    public void setDirection(int direction) {
+    public void setDirection(Direction dir) {
         this.direction = direction;
     }
 
-    public void setNext_direction(int next_direction) {
+    public void setNext_direction(Direction next_direction) {
         this.next_direction = next_direction;
     }
 
-    public int getDirection() {
+    public Direction getDirection() {
         return direction;
     }
 
-    public int getNext_direction(){
+    public Direction getNext_direction(){
         return next_direction;
     }
 

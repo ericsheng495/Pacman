@@ -31,7 +31,7 @@ public class GameView extends View {
 
     //Tiles and Pacman
     private final Point[][] mPoints = new Point[MAP_SIZE][MAP_SIZE];
-    private final LinkedList<Point> mPacMan = new LinkedList<>();
+    private Pacman mPacMan;
     private Direction mDir;
     private boolean mGameOver = false;
 
@@ -41,11 +41,12 @@ public class GameView extends View {
 
     private Paint mPaint = new Paint();
 
-    public void init() {
+    public void init(Pacman pacman) {
         mGameOver = false;
         mBoxSize = getContext().getResources().getDimensionPixelSize(R.dimen.game_size) / MAP_SIZE;
         mDir = Direction.RIGHT;
         mBoxPadding = mBoxSize / 20;
+        mPacMan = pacman;
         initMap();
     }
     private void initMap() {
@@ -80,7 +81,7 @@ public class GameView extends View {
                 if (mLayout[i][j] == 4) {
                     Point point = getPoint(j, i);
                     point.type = PointType.PACMAN;
-                    mPacMan.add(point);
+                    mPacMan.setPoint(point);
                 }
             }
         }
@@ -92,30 +93,26 @@ public class GameView extends View {
     }
 
     public void next() {
-        Point first = mPacMan.getFirst();
+        Point first = mPacMan.getPoint();
+        Point nextInDirection = getCurrNext(first);
         Point next = getNext(first);
 
+        if (next.type != PointType.WALL) {
+            next.type = PointType.PACMAN;
+            first.type = PointType.EMPTY;
+            mPacMan.setPoint(next);
+        }
+
         switch (next.type) {
-            case EMPTY:
-                next.type = PointType.PACMAN;
-                mPacMan.addFirst(next);
-                mPacMan.getLast().type = PointType.EMPTY;
-                mPacMan.removeLast();
-                break;
             case PELLET:
-                next.type = PointType.PACMAN;
-                mPacMan.addFirst(next);
-                mPacMan.getLast().type = PointType.EMPTY;
-                mPacMan.removeLast();
                 //Add Points
+                mPacMan.score += 50;
                 break;
             case POWER_PELLET:
-                next.type = PointType.PACMAN;
-                mPacMan.addFirst(next);
-                mPacMan.getLast().type = PointType.EMPTY;
-                mPacMan.removeLast();
                 //Add Points + Super
-            case WALL:
+                mPacMan.score += 100;
+                mPacMan.setSuper(true);
+                mPacMan.superTimer = 20;
                 break;
         }
     }
@@ -124,12 +121,32 @@ public class GameView extends View {
         mDir = dir;
     }
 
+    private Point getCurrNext(Point point) {
+        int x = point.x;
+        int y = point.y;
+
+        switch (mPacMan.getDirection()) {
+            case UP:
+                y = y == 0 ? MAP_SIZE - 1 : y - 1;
+                break;
+            case DOWN:
+                y = y == MAP_SIZE - 1 ? 0 : y + 1;
+                break;
+            case LEFT:
+                x = x == 0 ? MAP_SIZE - 1 : x - 1;
+                break;
+            case RIGHT:
+                x = x == MAP_SIZE - 1 ? 0 : x + 1;
+                break;
+        }
+        return getPoint(x, y);
+    }
 
     private Point getNext(Point point) {
         int x = point.x;
         int y = point.y;
 
-        switch (mDir) {
+        switch (mPacMan.getNext_direction()) {
             case UP:
                 y = y == 0 ? MAP_SIZE - 1 : y - 1;
                 break;

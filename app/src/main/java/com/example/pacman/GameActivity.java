@@ -3,6 +3,8 @@ package com.example.pacman;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -17,7 +19,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private static int FPS = 5;
     private static int SPEED = 1;
     private final Handler mHandler = new Handler();
-
+    GestureDetector gestureDetector;
+    Pacman pacman;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,22 +29,18 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         String name = intent.getStringExtra("Name");
         int difficulty = intent.getIntExtra("Difficulty", 0);
         String sprite = intent.getStringExtra("sprite_path");
-
+        Pacman pacman = new Pacman();
         mGameView = findViewById(R.id.game_view);
-        mGameView.init();
+        mGameView.init(pacman);
 
         findViewById(R.id.up_button).setOnClickListener(v ->
-                mGameView.setDirection(Direction.UP));
+                pacman.setNext_direction(Direction.UP));
         findViewById(R.id.down_button).setOnClickListener(v ->
-                mGameView.setDirection(Direction.DOWN));
+                pacman.setNext_direction(Direction.DOWN));
         findViewById(R.id.left_button).setOnClickListener(v ->
-                mGameView.setDirection(Direction.LEFT));
+                pacman.setNext_direction(Direction.LEFT));
         findViewById(R.id.right_button).setOnClickListener(v ->
-                mGameView.setDirection(Direction.RIGHT));
-
-
-
-
+                pacman.setNext_direction(Direction.RIGHT));
 
         Button mainMenu = findViewById(R.id.mainButton);
         mainMenu.setOnClickListener(this);
@@ -64,6 +63,33 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         ImageView spriteView = (ImageView) findViewById(R.id.spriteInGame);
         spriteView.setImageResource(getResources().getIdentifier("@android:drawable/" + sprite, null, getPackageName()));
 
+        gestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
+            @Override
+            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                if (e1.getX() - e2.getX() > 220 && Math.abs(velocityX) > 240) {
+                    //Toast.makeText(GameActivity.this, "left", Toast.LENGTH_SHORT).show();
+                    pacman.setNext_direction(Direction.LEFT); //swipe left
+                    //difficultText.setText("" +2);
+                    return false;
+                } else if (e2.getX() - e1.getX() > 220 && Math.abs(velocityX) > 240) {
+                    pacman.setNext_direction(Direction.RIGHT); //swipe right
+                    //difficultText.setText("" +1);
+                    return false;
+                }
+
+                if (e1.getY() - e2.getY() > 200 && Math.abs(velocityY) > 240) {
+                    pacman.setNext_direction(Direction.UP); //swipe up
+                    //difficultText.setText("" +0);
+                    return false;
+                } else if (e2.getY() - e1.getY() > 200 && Math.abs(velocityY) > 240) {
+                    //difficultText.setText("" +3);
+                    pacman.setNext_direction(Direction.DOWN); //swipe down
+                    return false;
+                }
+                return false;
+            }
+        });
+
         startGame();
     }
 
@@ -79,6 +105,11 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             case (10):
                 break;
         }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return gestureDetector.onTouchEvent(event);
     }
 
     private void startGame() {
