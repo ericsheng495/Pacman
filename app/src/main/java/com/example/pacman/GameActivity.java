@@ -2,14 +2,12 @@ package com.example.pacman;
 
 import android.content.Intent;
 import android.os.Bundle;
-<<<<<<< HEAD
-=======
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
->>>>>>> pacman-movement
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -20,8 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class GameActivity extends AppCompatActivity implements View.OnClickListener {
     private String[] difficultyLevels = {"Easy", "Normal", "Hard"};
     private String[] lives = {"5", "3", "2"};
-<<<<<<< HEAD
-=======
+
     private GameView mGameView;
     private static int FPS = 5;
     private static int SPEED = 1;
@@ -29,7 +26,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     GestureDetector gestureDetector;
     Pacman pacman;
     Direction nextDirection = Direction.RIGHT;
->>>>>>> pacman-movement
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,10 +35,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         String name = intent.getStringExtra("Name");
         int difficulty = intent.getIntExtra("Difficulty", 0);
         String sprite = intent.getStringExtra("sprite_path");
-<<<<<<< HEAD
 
-
-=======
         Pacman pacman = new Pacman();
 
         findViewById(R.id.up_button).setOnClickListener(v ->
@@ -52,7 +46,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 nextDirection = Direction.LEFT);
         findViewById(R.id.right_button).setOnClickListener(v ->
                 nextDirection = Direction.RIGHT);
->>>>>>> pacman-movement
+
 
         Button mainMenu = findViewById(R.id.mainButton);
         mainMenu.setOnClickListener(this);
@@ -75,9 +69,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         ImageView spriteView = (ImageView) findViewById(R.id.spriteInGame);
         spriteView.setImageResource(getResources().getIdentifier("@android:drawable/" + sprite, null, getPackageName()));
 
-<<<<<<< HEAD
 
-=======
         gestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
             @Override
             public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
@@ -116,7 +108,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         mGameView = findViewById(R.id.game_view);
         mGameView.init(pacman);
         startGame();
->>>>>>> pacman-movement
     }
 
     @Override
@@ -132,8 +123,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
     }
-<<<<<<< HEAD
-=======
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -159,5 +148,4 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         }).start();
     }
 
->>>>>>> pacman-movement
 }
