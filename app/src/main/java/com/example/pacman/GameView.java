@@ -107,12 +107,6 @@ public class GameView extends View {
         }
 
         next = getCurrNext(first);
-        if (next.type != PointType.WALL) {
-            next.type = PointType.PACMAN;
-            first.type = PointType.EMPTY;
-            mPacMan.setPoint(next);
-        }
-
         switch (next.type) {
             case PELLET:
                 //Add Points
@@ -125,6 +119,13 @@ public class GameView extends View {
                 mPacMan.superTimer = 20;
                 break;
         }
+        if (next.type != PointType.WALL) {
+            next.type = PointType.PACMAN;
+            first.type = PointType.EMPTY;
+            mPacMan.setPoint(next);
+        }
+
+
     }
 
     public void setDirection(Direction dir) {
@@ -209,5 +210,7 @@ public class GameView extends View {
         }
         //TextView scoreText = findViewById(R.id.scoreText);
         //scoreText.setText("" + mPacMan.score);
+        TextView scoreText = (TextView) ((GameActivity) getContext()).findViewById(R.id.scoreText);
+        scoreText.setText("Score: " + mPacMan.score);
     }
 }
