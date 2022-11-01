@@ -16,6 +16,11 @@ import java.util.Random;
 import android.os.Handler;
 import android.widget.TextView;
 
+/*
+NOTE: This code was refactored and adapted from a youtube snake tutorial.
+Link: https://www.youtube.com/watch?v=edUrUoZHouY&ab_channel=HDROIDStudio
+ */
+
 public class GameView extends View {
     public GameView(Context context) {
         super(context);
