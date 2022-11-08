@@ -45,6 +45,7 @@ public class GameView extends View {
 
     //Enemies
     private Enemy mGreen = new Enemy();
+    private int landedOnPellet = 0;
 
     //Sizing
     private int mBoxSize;
@@ -115,16 +116,15 @@ public class GameView extends View {
     }
 
     public void next(Direction nextDirection) {
-        Point first = mPacMan.getPoint();
-        //Point nextInDirection = getCurrNext(first);
-        Point next = getNext(first, nextDirection);
+        Point pacmanFirst = mPacMan.getPoint();
+        Point pacmanNext = getNext(pacmanFirst, nextDirection);
 
-        if (nextDirection != mPacMan.getDirection() && next.type != PointType.WALL) {
+        if (nextDirection != mPacMan.getDirection() && pacmanNext.type != PointType.WALL) {
             mPacMan.setDirection(nextDirection);
         }
 
-        next = getCurrNext(first);
-        switch (next.type) {
+        pacmanNext = getCurrNext(pacmanFirst);
+        switch (pacmanNext.type) {
             case PELLET:
                 //Add Points
                 mPacMan.score += 50;
@@ -137,14 +137,57 @@ public class GameView extends View {
                 break;
             case ENEMY:
                 mPacMan.setLives(mPacMan.getLives() - 1);
+                break;
         }
-        if (next.type != PointType.WALL) {
-            next.type = PointType.PACMAN;
-            first.type = PointType.EMPTY;
-            mPacMan.setPoint(next);
+        if (pacmanNext.type != PointType.WALL) {
+            pacmanNext.type = PointType.PACMAN;
+            pacmanFirst.type = PointType.EMPTY;
+            mPacMan.setPoint(pacmanNext);
+        }
+    }
+
+    public void enemyNext() {
+        Point greenFirst = mGreen.getPoint();
+        Direction nextGreenDir = mGreen.getNext_direction();
+        Point greenNext = getNext(greenFirst, nextGreenDir);
+
+        if (nextGreenDir != mGreen.getDirection() && greenNext.type != PointType.WALL) {
+            mGreen.setDirection(nextGreenDir);
         }
 
-
+        greenNext = getCurrNext(greenFirst);
+        /*switch (greenNext.type) {
+            case PELLET:
+                //Add Points
+                mPacMan.score += 50;
+                break;
+            case POWER_PELLET:
+                //Add Points + Super
+                mPacMan.score += 100;
+                mPacMan.setSuper(true);
+                mPacMan.superTimer = 20;
+                break;
+            case ENEMY:
+                mPacMan.setLives(mPacMan.getLives() - 1);
+        }*/
+        if (greenNext.type == PointType.PELLET) {
+            landedOnPellet = 1;
+        } else if (greenNext.type == PointType.POWER_PELLET) {
+            landedOnPellet = 2;
+        }
+        if (greenNext.type != PointType.WALL) {
+            greenNext.type = PointType.ENEMY;
+            if (landedOnPellet == 1) {
+                greenFirst.type = PointType.PELLET;
+                landedOnPellet = 0;
+            } else if (landedOnPellet == 2) {
+                greenFirst.type = PointType.POWER_PELLET;
+                landedOnPellet = 0;
+            } else {
+                greenFirst.type = PointType.EMPTY;
+            }
+            mGreen.setPoint(greenNext);
+        }
     }
 
     public void setDirection(Direction dir) {

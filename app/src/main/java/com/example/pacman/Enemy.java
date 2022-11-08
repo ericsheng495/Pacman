@@ -12,6 +12,8 @@ public class Enemy {
     }
 
     public void setPoint(Point point) {
+        direction = Direction.LEFT;
+        next_direction = Direction.LEFT;
         location = point;
     }
 

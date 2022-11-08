@@ -139,6 +139,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                     if (count % SPEED == 0) {
                         //pacman.setNext_direction(nextDirection);
                         mGameView.next(nextDirection);
+                        mGameView.enemyNext();
                         mHandler.post(mGameView::invalidate);
                     }
                 } catch (InterruptedException e) {
