@@ -43,6 +43,9 @@ public class GameView extends View {
     private Direction mDir;
     private boolean mGameOver = false;
 
+    //Enemies
+    private Enemy mGreen = new Enemy();
+
     //Sizing
     private int mBoxSize;
     private int mBoxPadding;
@@ -93,6 +96,15 @@ public class GameView extends View {
                     point.type = PointType.PACMAN;
                     mPacMan.setPoint(point);
                 }
+                //Ghost IDS:
+                // 5: Green
+                // 6: Cyan
+                // 7: Magenta
+                if (mLayout[i][j] == 5) {
+                    Point point = getPoint(j, i);
+                    point.type = PointType.ENEMY;
+                    mGreen.setPoint(point);
+                }
             }
         }
 
@@ -123,6 +135,8 @@ public class GameView extends View {
                 mPacMan.setSuper(true);
                 mPacMan.superTimer = 20;
                 break;
+            case ENEMY:
+                mPacMan.setLives(mPacMan.getLives() - 1);
         }
         if (next.type != PointType.WALL) {
             next.type = PointType.PACMAN;
@@ -204,6 +218,8 @@ public class GameView extends View {
                     case WALL:
                         mPaint.setColor(Color.BLUE);
                         break;
+                    case ENEMY:
+                        mPaint.setColor(Color.GREEN);
                 }
                 int left = mBoxSize * x;
                 int right = left + mBoxSize;

@@ -11,6 +11,7 @@ public class Pacman {
     private Direction next_direction;
     private Point location;
     private boolean superState;
+    private int lives;
 
     public int score;
     public int superTimer;
@@ -19,6 +20,7 @@ public class Pacman {
         this.direction = Direction.RIGHT;
         this.next_direction = Direction.RIGHT;
         this.superState = false;
+        this.lives = 3;
         superTimer = 0;
     }
 
@@ -67,5 +69,13 @@ public class Pacman {
 
     public Direction getNext_direction(){
         return next_direction;
+    }
+
+    public void setLives(int l) {
+        lives = l;
+    }
+
+    public int getLives() {
+        return lives;
     }
 }
