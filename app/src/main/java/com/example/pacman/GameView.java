@@ -7,11 +7,13 @@ import android.graphics.Paint;
 import android.os.Message;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 
 import androidx.annotation.Nullable;
 
 import java.util.LinkedList;
+import java.util.PriorityQueue;
 import java.util.Random;
 import android.os.Handler;
 import android.widget.TextView;
@@ -40,23 +42,27 @@ public class GameView extends View {
     //Tiles and Pacman
     private final Point[][] mPoints = new Point[MAP_SIZE][MAP_SIZE];
     private Pacman mPacMan;
+    public int pelletCount = 0;
     private Direction mDir;
     private boolean mGameOver = false;
-
+    private boolean mGameWin = false;
+    //private PriorityQueue<Point> pelletQueue;
+    private LinkedList<Enemy> enemyQueue;
     //Sizing
     private int mBoxSize;
     private int mBoxPadding;
 
     private Paint mPaint = new Paint();
 
-    private Handler mHandler;
+    //private Handler mHandler;
     public void init(Pacman pacman) {
-        mGameOver = false;
         mBoxSize = getContext().getResources().getDimensionPixelSize(R.dimen.game_size) / MAP_SIZE;
         mDir = Direction.RIGHT;
         mBoxPadding = mBoxSize / 20;
         mPacMan = pacman;
         //mHandler = handler;
+        //pelletQueue = new PriorityQueue<>((a, b) -> (a.x - b.x + b.y - a.y)%10);
+        enemyQueue = new LinkedList<Enemy>();
         initMap();
     }
     private void initMap() {
@@ -83,10 +89,12 @@ public class GameView extends View {
                 if (mLayout[i][j] == 2) {
                     Point point = getPoint(j, i);
                     point.type = PointType.PELLET;
+                    pelletCount++;
                 }
                 if (mLayout[i][j] == 3) {
                     Point point = getPoint(j, i);
                     point.type = PointType.POWER_PELLET;
+                    pelletCount++;
                 }
                 if (mLayout[i][j] == 4) {
                     Point point = getPoint(j, i);
@@ -103,6 +111,16 @@ public class GameView extends View {
     }
 
     public void next(Direction nextDirection) {
+        if (mPacMan.invincibilityTimer > 0) {
+            mPacMan.invincibilityTimer--;
+        }
+
+        if (mPacMan.superTimer > 0) {
+            mPacMan.superTimer--;
+        } else {
+            mPacMan.setSuper(false);
+        }
+
         Point first = mPacMan.getPoint();
         //Point nextInDirection = getCurrNext(first);
         Point next = getNext(first, nextDirection);
@@ -116,6 +134,8 @@ public class GameView extends View {
             case PELLET:
                 //Add Points
                 mPacMan.score += 50;
+                //mPacMan.lives = 0; debug
+                //pelletQueue.add(next);
                 break;
             case POWER_PELLET:
                 //Add Points + Super
@@ -123,11 +143,31 @@ public class GameView extends View {
                 mPacMan.setSuper(true);
                 mPacMan.superTimer = 20;
                 break;
+            case ENEMYRED:
+            case ENEMYGREEN:
+            case ENEMYMAG:
+                if (!mPacMan.getSuper()) {
+                    if (mPacMan.invincibilityTimer <= 0) {
+                        mPacMan.lives--;
+                        mPacMan.invincibilityTimer = 10;
+                    }
+                } else {
+                    mPacMan.score += 200;
+                }
+                break;
         }
         if (next.type != PointType.WALL) {
-            next.type = PointType.PACMAN;
+            if (next.type != PointType.ENEMYRED && next.type != PointType.ENEMYMAG
+                    && next.type != PointType.ENEMYGREEN) {
+                next.type = PointType.PACMAN;
+            }
             first.type = PointType.EMPTY;
             mPacMan.setPoint(next);
+        }
+        if (mPacMan.lives <= 0) {
+            mGameOver = true;
+        } else if (pelletCount <= 0) {
+            mGameWin = true;
         }
 
 
@@ -183,11 +223,16 @@ public class GameView extends View {
         return mGameOver;
     }
 
+    public boolean isGameWin() {
+        return mGameWin;
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         for (int y = 0; y < MAP_SIZE; y++) {
             for (int x = 0; x < MAP_SIZE; x++) {
+                Point cur = getPoint(x, y);
                 switch (getPoint(x, y).type) {
                     case PELLET:
                         mPaint.setColor(0xffa500); //orange

@@ -26,7 +26,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     GestureDetector gestureDetector;
     Pacman pacman;
     Direction nextDirection = Direction.RIGHT;
-
+    Boolean gameStart = new Boolean(false);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -133,7 +133,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         final int delay = 1000 / FPS;
         new Thread(() -> {
             int count = 0;
-            while (!mGameView.isGameOver()) {
+            while (!mGameView.isGameOver() && !mGameView.isGameWin()) {
                 try {
                     Thread.sleep(delay);
                     if (count % SPEED == 0) {
@@ -141,10 +141,15 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         mGameView.next(nextDirection);
                         mHandler.post(mGameView::invalidate);
                     }
+                    count++;
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
+            mHandler.post(() -> {
+                Intent intent = new Intent(getApplicationContext(), EndScreenActivity.class);
+                startActivity(intent);
+            });
         }).start();
     }
 

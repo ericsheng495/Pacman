@@ -14,12 +14,16 @@ public class Pacman {
 
     public int score;
     public int superTimer;
+    public int lives;
+    public int invincibilityTimer;
     public Pacman() {
         this.score = 0;
         this.direction = Direction.RIGHT;
         this.next_direction = Direction.RIGHT;
         this.superState = false;
+        this.lives = 3;
         superTimer = 0;
+        invincibilityTimer = 0;
     }
 
     public void setPoint(Point point) {
