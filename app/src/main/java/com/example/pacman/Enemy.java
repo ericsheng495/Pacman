@@ -1,6 +1,6 @@
 package com.example.pacman;
 
-public class Enemy {
+public abstract class Enemy {
     private int x_location;
     private int y_location;
     private Direction direction;
@@ -60,6 +60,8 @@ public class Enemy {
     public int getLandedOnPellet() {
         return landedOnPellet;
     }
+
+    public abstract PointType getEnemyType();
 
     public void moveAlgo1() {
 
