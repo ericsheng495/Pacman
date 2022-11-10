@@ -152,24 +152,14 @@ public class GameView extends View {
         Point greenNext = getNext(greenFirst, nextGreenDir);
 
         if (nextGreenDir != mGreen.getDirection() && greenNext.type != PointType.WALL) {
+            //needs to be refactored
             mGreen.setDirection(nextGreenDir);
         }
 
         greenNext = getCurrNext(greenFirst);
-        /*switch (greenNext.type) {
-            case PELLET:
-                //Add Points
-                mPacMan.score += 50;
-                break;
-            case POWER_PELLET:
-                //Add Points + Super
-                mPacMan.score += 100;
-                mPacMan.setSuper(true);
-                mPacMan.superTimer = 20;
-                break;
-            case ENEMY:
-                mPacMan.setLives(mPacMan.getLives() - 1);
-        }*/
+
+        //Needs to be refactored, moves pellets one back instead of the same place after landing on
+        //time
         if (greenNext.type == PointType.PELLET) {
             landedOnPellet = 1;
         } else if (greenNext.type == PointType.POWER_PELLET) {
@@ -187,6 +177,7 @@ public class GameView extends View {
                 greenFirst.type = PointType.EMPTY;
             }
             mGreen.setPoint(greenNext);
+
         }
     }
 
@@ -247,10 +238,10 @@ public class GameView extends View {
             for (int x = 0; x < MAP_SIZE; x++) {
                 switch (getPoint(x, y).type) {
                     case PELLET:
-                        mPaint.setColor(0xffa500); //orange
+                        mPaint.setColor(Color.WHITE);
                         break;
                     case POWER_PELLET:
-                        mPaint.setColor(Color.RED);
+                        mPaint.setColor(Color.parseColor("#FC9D03"));//orange
                         break;
                     case PACMAN:
                         mPaint.setColor(Color.YELLOW);
@@ -262,7 +253,7 @@ public class GameView extends View {
                         mPaint.setColor(Color.BLUE);
                         break;
                     case ENEMY:
-                        mPaint.setColor(Color.GREEN);
+                        mPaint.setColor(Color.MAGENTA);
                 }
                 int left = mBoxSize * x;
                 int right = left + mBoxSize;

@@ -6,6 +6,7 @@ public class Enemy {
     private Direction direction;
     private Direction next_direction;
     private Point location;
+    private Point prevPoint;
 
     public Enemy() {
 
