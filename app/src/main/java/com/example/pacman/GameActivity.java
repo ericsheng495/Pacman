@@ -27,6 +27,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     Pacman pacman;
     Direction nextDirection = Direction.RIGHT;
 
+    GreenGhost greenGhost = new GreenGhost();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

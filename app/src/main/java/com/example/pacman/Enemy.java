@@ -6,10 +6,10 @@ public class Enemy {
     private Direction direction;
     private Direction next_direction;
     private Point location;
-    private Point prevPoint;
+    private int landedOnPellet;
 
     public Enemy() {
-
+        landedOnPellet = 0;
     }
 
     public void setPoint(Point point) {
@@ -52,6 +52,13 @@ public class Enemy {
 
     public Direction getNext_direction(){
         return next_direction;
+    }
+
+    public void setLandedOnPellet(int i) {
+        landedOnPellet = i;
+    }
+    public int getLandedOnPellet() {
+        return landedOnPellet;
     }
 
     public void moveAlgo1() {

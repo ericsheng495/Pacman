@@ -44,8 +44,9 @@ public class GameView extends View {
     private boolean mGameOver = false;
 
     //Enemies
-    private Enemy mGreen = new Enemy();
-    private int landedOnPellet = 0;
+    private GreenGhost mGreen = new GreenGhost();
+    private MagentaGhost mMagenta = new MagentaGhost();
+    private RedGhost mRed= new RedGhost();
 
     //Sizing
     private int mBoxSize;
@@ -99,12 +100,22 @@ public class GameView extends View {
                 }
                 //Ghost IDS:
                 // 5: Green
-                // 6: Cyan
-                // 7: Magenta
+                // 6: Magenta
+                // 7: Red
                 if (mLayout[i][j] == 5) {
                     Point point = getPoint(j, i);
                     point.type = PointType.ENEMY;
                     mGreen.setPoint(point);
+                }
+                if (mLayout[i][j] == 6) {
+                    Point point = getPoint(j, i);
+                    point.type = PointType.ENEMY;
+                    mMagenta.setPoint(point);
+                }
+                if (mLayout[i][j] == 7) {
+                    Point point = getPoint(j, i);
+                    point.type = PointType.ENEMY;
+                    mRed.setPoint(point);
                 }
             }
         }
@@ -146,39 +157,53 @@ public class GameView extends View {
         }
     }
 
-    public void enemyNext() {
-        Point greenFirst = mGreen.getPoint();
-        Direction nextGreenDir = mGreen.getNext_direction();
-        Point greenNext = getNext(greenFirst, nextGreenDir);
+    public void enemyNext(Enemy enemy) {
+        Point enemyFirst = enemy.getPoint();
+        Direction nextEnemyDir = enemy.getNext_direction();
+        Point enemyNext = getNext(enemyFirst, nextEnemyDir);
 
-        if (nextGreenDir != mGreen.getDirection() && greenNext.type != PointType.WALL) {
-            //needs to be refactored
-            mGreen.setDirection(nextGreenDir);
+        if (nextEnemyDir != enemy.getDirection() && enemyNext.type != PointType.WALL) {
+            //refactor
+            enemy.setDirection(nextEnemyDir);
         }
 
-        greenNext = getCurrNext(greenFirst);
-
-        //Needs to be refactored, moves pellets one back instead of the same place after landing on
-        //time
-        if (greenNext.type == PointType.PELLET) {
-            landedOnPellet = 1;
-        } else if (greenNext.type == PointType.POWER_PELLET) {
-            landedOnPellet = 2;
-        }
-        if (greenNext.type != PointType.WALL) {
-            greenNext.type = PointType.ENEMY;
-            if (landedOnPellet == 1) {
-                greenFirst.type = PointType.PELLET;
-                landedOnPellet = 0;
-            } else if (landedOnPellet == 2) {
-                greenFirst.type = PointType.POWER_PELLET;
-                landedOnPellet = 0;
-            } else {
-                greenFirst.type = PointType.EMPTY;
+        enemyNext = getCurrNext(enemyFirst);
+        if (enemyNext.type == PointType.PELLET) {
+            //landedOnPellet = 1;
+            enemy.setLandedOnPellet(1);
+            enemyNext.type = PointType.ENEMY;
+            enemyFirst.type = PointType.EMPTY;
+            enemy.setPoint(enemyNext);
+        } else if (enemyNext.type == PointType.POWER_PELLET) {
+            //landedOnPellet = 2;
+            enemy.setLandedOnPellet(2);
+            enemyNext.type = PointType.ENEMY;
+            enemyFirst.type = PointType.EMPTY;
+            enemy.setPoint(enemyNext);
+        } else {
+            if (enemyNext.type != PointType.WALL) {
+                enemyNext.type = PointType.ENEMY;
+                if (enemy.getLandedOnPellet() == 1) {
+                    enemyFirst.type = PointType.PELLET;
+                    //landedOnPellet = 0;
+                    enemy.setLandedOnPellet(0);
+                } else if (enemy.getLandedOnPellet() == 2) {
+                    enemyFirst.type = PointType.POWER_PELLET;
+                    //landedOnPellet = 0;
+                    enemy.setLandedOnPellet(0);
+                } else {
+                    enemyFirst.type = PointType.EMPTY;
+                }
+                enemy.setPoint(enemyNext);
             }
-            mGreen.setPoint(greenNext);
-
         }
+
+    }
+
+    public void enemyNext() {
+        enemyNext(mGreen);
+        //enemyNext(mRed);
+        //enemyNext(mMagenta);
     }
 
     public void setDirection(Direction dir) {
@@ -267,5 +292,7 @@ public class GameView extends View {
         //scoreText.setText("" + mPacMan.score);
         TextView scoreText = (TextView) ((GameActivity) getContext()).findViewById(R.id.scoreText);
         scoreText.setText("Score: " + mPacMan.score);
+        TextView livesText = (TextView) ((GameActivity) getContext()).findViewById(R.id.livesText);
+        livesText.setText("Lives: " + mPacMan.getLives());
     }
 }
