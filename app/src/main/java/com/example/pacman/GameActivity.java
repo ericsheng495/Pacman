@@ -40,7 +40,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         int difficulty = intent.getIntExtra("Difficulty", 0);
         String sprite = intent.getStringExtra("sprite_path");
 
-        Pacman pacman = new Pacman();
 
         findViewById(R.id.up_button).setOnClickListener(v ->
                 nextDirection = Direction.UP);
@@ -110,6 +109,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             }
         };*/
         mGameView = findViewById(R.id.game_view);
+        pacman = new Pacman(mGameView);
         mGameView.init(pacman);
         startGame();
     }

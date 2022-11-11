@@ -1,13 +1,11 @@
 package com.example.pacman;
 
 public abstract class Enemy {
-    private int x_location;
-    private int y_location;
     private Direction direction;
     private Direction next_direction;
     private Point location;
     private int landedOnPellet;
-
+    private boolean visible = false;
     public Enemy() {
         landedOnPellet = 0;
     }
@@ -20,22 +18,6 @@ public abstract class Enemy {
 
     public Point getPoint() {
         return location;
-    }
-
-    public int getXloc() {
-        return x_location;
-    }
-
-    public int getYloc() {
-        return y_location;
-    }
-
-    public void setX_location(int x) {
-        this.x_location = x;
-    }
-
-    public void setY_location(int y_location) {
-        this.y_location = y_location;
     }
 
     public void setDirection(Direction dir) {
@@ -66,4 +48,5 @@ public abstract class Enemy {
     public void moveAlgo1() {
 
     }
+
 }

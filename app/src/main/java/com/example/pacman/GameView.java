@@ -70,7 +70,7 @@ public class GameView extends View {
         //mHandler = handler;
         //pelletQueue = new PriorityQueue<>((a, b) -> (a.x - b.x + b.y - a.y)%10);
         enemyQueue = new LinkedList<PointType>();
-
+        //enemyQueue.add(PointType.ENEMYMAG);
         initMap();
     }
     private void initMap() {
@@ -105,6 +105,7 @@ public class GameView extends View {
                     case 4:
                         point.type = PointType.PACMAN;
                         mPacMan.setPoint(point);
+                        mPacMan.setSpawnPoint(point);
                         break;
                     //Ghost IDS:
                     // 5: Green
@@ -132,61 +133,9 @@ public class GameView extends View {
         return mPoints[y][x];
     }
 
-    public void next(Direction nextDirection) {
-        Point pacmanFirst = mPacMan.getPoint();
-        Point pacmanNext = getNext(pacmanFirst, nextDirection);
-        if (mPacMan.invincibilityTimer > 0) {
-            mPacMan.invincibilityTimer--;
-        }
+    public void next(Direction inputDirection) {
+        mPacMan.next(inputDirection);
 
-        if (mPacMan.superTimer > 0) {
-            mPacMan.superTimer--;
-        } else {
-            mPacMan.superTimer = 0;
-            mPacMan.setSuper(false);
-        }
-
-
-        if (nextDirection != mPacMan.getDirection() && pacmanNext.type != PointType.WALL) {
-            mPacMan.setDirection(nextDirection);
-        }
-
-        pacmanNext = getCurrNext(pacmanFirst);
-        switch (pacmanNext.type) {
-            case PELLET:
-                //Add Points
-                mPacMan.score += 50;
-                //mPacMan.lives = 0; debug
-                //pelletQueue.add(next);
-                break;
-            case POWER_PELLET:
-                //Add Points + Super
-                mPacMan.score += 100;
-                mPacMan.setSuper(true);
-                mPacMan.superTimer = 20;
-                break;
-            case ENEMYRED:
-            case ENEMYGREEN:
-            case ENEMYMAG:
-                if (!mPacMan.getSuper()) {
-                    if (mPacMan.invincibilityTimer <= 0) {
-                        mPacMan.lives--;
-                        mPacMan.invincibilityTimer = 10;
-                    }
-                } else {
-                    mPacMan.score += 200;
-                    enemyQueue.add(pacmanNext.type);
-                }
-                break;
-        }
-        if (pacmanNext.type != PointType.WALL) {
-            if (mPacMan.getSuper() || (pacmanNext.type != PointType.ENEMYRED && pacmanNext.type != PointType.ENEMYMAG
-                    && pacmanNext.type != PointType.ENEMYGREEN)) {
-                pacmanNext.type = PointType.PACMAN;
-            }
-            pacmanFirst.type = PointType.EMPTY;
-            mPacMan.setPoint(pacmanNext);
-        }
         if (mPacMan.lives <= 0) {
             mGameOver = true;
         } else if (pelletCount <= 0) {
@@ -203,7 +152,7 @@ public class GameView extends View {
             //refactor
             enemy.setDirection(nextEnemyDir);
         }
-        enemyNext = getCurrNext(enemyFirst);
+        enemyNext = getNext(enemyFirst, enemy.getDirection());
         if (enemyNext.type == PointType.PELLET) {
             //landedOnPellet = 1;
             enemy.setLandedOnPellet(1);
@@ -246,28 +195,7 @@ public class GameView extends View {
         mDir = dir;
     }
 
-    private Point getCurrNext(Point point) {
-        int x = point.x;
-        int y = point.y;
-
-        switch (mPacMan.getDirection()) {
-            case UP:
-                y = y == 0 ? MAP_SIZE - 1 : y - 1;
-                break;
-            case DOWN:
-                y = y == MAP_SIZE - 1 ? 0 : y + 1;
-                break;
-            case LEFT:
-                x = x == 0 ? MAP_SIZE - 1 : x - 1;
-                break;
-            case RIGHT:
-                x = x == MAP_SIZE - 1 ? 0 : x + 1;
-                break;
-        }
-        return getPoint(x, y);
-    }
-
-    private Point getNext(Point point, Direction nextDirection) {
+    public Point getNext(Point point, Direction nextDirection) {
         int x = point.x;
         int y = point.y;
 
