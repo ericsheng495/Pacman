@@ -1,6 +1,8 @@
 package com.example.pacman;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.util.Log;
 import android.widget.ImageView;
 
 
@@ -16,23 +18,29 @@ public class Pacman {
 
     public int lives;
     public int invincibilityTimer;
-    public int x;
-    public int y;
-
-    public Pacman(GameView view) {
+    public float x = 0;
+    public float y = 0;
+    private float vel;
+    private Bitmap sprite;
+    private int boxSize;
+    public Pacman(GameView view, Bitmap sprite) {
         this.score = 0;
         this.direction = Direction.RIGHT;
         this.superState = false;
         this.lives = 3;
         superTimer = 0;
-        invincibilityTimer = 0;
         this.view = view;
+        this.sprite = sprite;
+        invincibilityTimer = 0;
     }
 
     public void setPoint(Point point) {
         location = point;
     }
-
+    public void setLocation(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
     public void setSpawnPoint(Point point) {
         spawnPoint = point;
     }
@@ -55,8 +63,67 @@ public class Pacman {
         return direction;
     }
 
+    public Bitmap getBitmap() {
+        return sprite;
+    }
+
+    public void setBoxSize(int boxSize) {
+        this.boxSize = boxSize;
+        this.vel = boxSize/8.0f;
+        Log.d("Pacman speed: ", "" + vel);
+    }
+
+    private void move() {
+        switch (direction) {
+            case UP:
+                y = (y - vel < 0) ? (GameView.MAP_SIZE * boxSize - vel) : y - vel;
+                break;
+            case DOWN:
+                y = (y + vel >= GameView.MAP_SIZE * boxSize) ? vel : y + vel;
+                break;
+            case LEFT:
+                x = (x - vel < 0) ? (GameView.MAP_SIZE * boxSize - vel) : x - vel;
+                break;
+            case RIGHT:
+                x = (x + vel >= GameView.MAP_SIZE * boxSize) ? vel : x + vel;
+                break;
+        }
+    }
+
     public void next(Direction nextDirection) {
-        Point pacmanFirst = location;
+        Log.d("Pacman.grid_xy: ", x/boxSize + ", " + y/boxSize);
+        Log.d("Check for wall collision: ", "" + (x%boxSize == 0 && y%boxSize == 0));
+        if (x%boxSize == 0 && y%boxSize == 0) { //check for wall and pellet
+            Point currentBlock = view.getPoint((int)x/boxSize, (int)y/boxSize);
+            switch (currentBlock.type) {
+                case PELLET:
+                    //Add Points
+                    score += 50;
+                    lives = 0; //debug
+                    currentBlock.type = PointType.EMPTY;
+                    break;
+                case POWER_PELLET:
+                    //Add Points + Super
+                    score += 100;
+                    superState = true;
+                    superTimer = 20;
+                    currentBlock.type = PointType.EMPTY;
+                    break;
+            }
+            Point nextBlock = view.getNext(currentBlock, nextDirection);
+            if (nextDirection != direction && nextBlock.type != PointType.WALL) {
+                direction = nextDirection;
+            }
+            nextBlock = view.getNext(currentBlock, direction);
+            if (nextBlock.type != PointType.WALL) {
+                move();
+            }
+        } else {
+            move();
+        }
+
+
+        /*Point pacmanFirst = location;
         Point pacmanNext = view.getNext(pacmanFirst, nextDirection);
 
         if (superTimer > 0) {
@@ -103,7 +170,7 @@ public class Pacman {
             }
             pacmanFirst.type = PointType.EMPTY;
             location = pacmanNext;
-        }
+        }*/
     }
 
 }

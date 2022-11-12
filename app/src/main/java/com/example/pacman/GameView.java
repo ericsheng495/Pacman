@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.os.Message;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -35,7 +37,7 @@ public class GameView extends View {
     }
 
     //Constants
-    private static final int MAP_SIZE = 20;
+    public static final int MAP_SIZE = 20;
     private static final int START_X = 5;
     private static final int START_Y = 10;
 
@@ -67,6 +69,7 @@ public class GameView extends View {
         mDir = Direction.RIGHT;
         mBoxPadding = mBoxSize / 20;
         mPacMan = pacman;
+        mPacMan.setBoxSize(mBoxSize);
         //mHandler = handler;
         //pelletQueue = new PriorityQueue<>((a, b) -> (a.x - b.x + b.y - a.y)%10);
         enemyQueue = new LinkedList<PointType>();
@@ -102,34 +105,15 @@ public class GameView extends View {
                         point.type = PointType.POWER_PELLET;
                         pelletCount++;
                         break;
-                    case 4:
-                        point.type = PointType.PACMAN;
-                        mPacMan.setPoint(point);
-                        mPacMan.setSpawnPoint(point);
-                        break;
-                    //Ghost IDS:
-                    // 5: Green
-                    // 6: Magenta
-                    // 7: Red
-                    case 5:
-                        point.type = PointType.ENEMYGREEN;
-                        mGreen.setPoint(point);
-                        break;
-                    case 6:
-                        point.type = PointType.ENEMYMAG;
-                        mMagenta.setPoint(point);
-                        break;
-                    case 7:
-                        point.type = PointType.ENEMYRED;
-                        mRed.setPoint(point);
-                        break;
                 }
             }
         }
+        Log.d("Box size: ", "" + mBoxSize);
+        mPacMan.setLocation(mBoxSize * 9, mBoxSize * 14);
 
     }
 
-    private Point getPoint(int x, int y) {
+    public Point getPoint(int x, int y) {
         return mPoints[y][x];
     }
 
@@ -227,10 +211,32 @@ public class GameView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        mPaint.setColor(Color.BLACK);
+        canvas.drawPaint(mPaint);
+        float ssize = mBoxSize * .5f;
         for (int y = 0; y < MAP_SIZE; y++) {
             for (int x = 0; x < MAP_SIZE; x++) {
                 Point cur = getPoint(x, y);
-                switch (getPoint(x, y).type) {
+                int left = mBoxSize * x;
+                int right = left + mBoxSize;
+                int top = mBoxSize * y;
+                int bottom = top + mBoxSize;
+                switch(getPoint(x,y).type) {
+                    case PELLET:
+                        mPaint.setColor(Color.WHITE);
+                        canvas.drawRect(left + (mBoxSize/2f - ssize/2), top + (mBoxSize/2f - ssize/2), left + (mBoxSize/2f + ssize/2), top + (mBoxSize/2f + ssize/2), mPaint);
+                        break;
+                    case POWER_PELLET:
+                        mPaint.setColor(Color.parseColor("#FC9D03"));
+                        canvas.drawRect(left, top, right, bottom, mPaint);
+                        break;
+                    case WALL:
+                        mPaint.setColor(Color.BLUE);
+                        canvas.drawRect(left, top, right, bottom, mPaint);
+                        break;
+
+                }
+                /*switch (getPoint(x, y).type) {
                     case PELLET:
                         mPaint.setColor(Color.WHITE);
                         break;
@@ -243,24 +249,21 @@ public class GameView extends View {
                     case WALL:
                         mPaint.setColor(Color.BLUE);
                         break;
-                    case ENEMYGREEN:
-                        mPaint.setColor(Color.GREEN);
-                        break;
-                    case ENEMYMAG:
-                        mPaint.setColor(Color.MAGENTA);
-                        break;
-                    case ENEMYRED:
-                        mPaint.setColor(Color.RED);
-                        break;
                 }
                 int left = mBoxSize * x;
                 int right = left + mBoxSize;
                 int top = mBoxSize * y;
                 int bottom = top + mBoxSize;
-                canvas.drawRect(left, top, right, bottom, mPaint);
+                canvas.drawRect(left, top, right, bottom, mPaint);*/
             }
 
         }
+        //canvas.draw
+        float left = mPacMan.x;
+        float right = left + mBoxSize;
+        float top = mPacMan.y;
+        float bottom = top + mBoxSize;
+        canvas.drawBitmap(mPacMan.getBitmap(), null, new RectF(left, top, right, bottom), mPaint);
         //Text Display
         TextView scoreText = (TextView) ((GameActivity) getContext()).findViewById(R.id.scoreText);
         scoreText.setText("Score: " + mPacMan.score);

@@ -1,6 +1,8 @@
 package com.example.pacman;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -20,7 +22,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private String[] lives = {"5", "3", "2"};
 
     private GameView mGameView;
-    private static int FPS = 5;
+    private static int FPS = 30;
     private static int SPEED = 1;
     private Handler mHandler = new Handler();
     GestureDetector gestureDetector;
@@ -109,7 +111,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             }
         };*/
         mGameView = findViewById(R.id.game_view);
-        pacman = new Pacman(mGameView);
+        Bitmap pacman_sprite = BitmapFactory.decodeResource(getResources(), R.drawable.sprite_pacman);
+        pacman = new Pacman(mGameView, pacman_sprite);
         mGameView.init(pacman);
         startGame();
     }
@@ -143,7 +146,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                     if (count % SPEED == 0) {
                         //pacman.setNext_direction(nextDirection);
                         mGameView.next(nextDirection);
-                        mGameView.enemyNext();
+                        //mGameView.enemyNext();
                         mHandler.post(mGameView::invalidate);
                     }
                     count++;
