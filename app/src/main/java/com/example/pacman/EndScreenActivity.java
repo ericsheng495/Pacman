@@ -43,6 +43,9 @@ public class EndScreenActivity extends AppCompatActivity {
         });
         loadScores(name, score);
         //((ScoreView)findViewById(R.id.appScoreView)).init();
+        showScores();
+    }
+    public void showScores() {
         LinearLayout layout = (LinearLayout) findViewById(R.id.scoreLayout);
         //loadScores(name, score);
         layout.setBackgroundColor(Color.BLACK);
@@ -68,7 +71,6 @@ public class EndScreenActivity extends AppCompatActivity {
             layout.addView(text);
         }
     }
-
     public void loadScores(String name, int score) {
         File scoreFile = new File(getFilesDir(), "scores.scrs");
         if (scoreFile.exists()) {
