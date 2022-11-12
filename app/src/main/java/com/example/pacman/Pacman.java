@@ -74,7 +74,7 @@ public class Pacman {
             case PELLET:
                 //Add Points
                 score += 50;
-                //lives = 0; //debug
+                lives = 0; //debug
                 break;
             case POWER_PELLET:
                 //Add Points + Super

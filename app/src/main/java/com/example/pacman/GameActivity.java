@@ -26,7 +26,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     GestureDetector gestureDetector;
     Pacman pacman;
     Direction nextDirection = Direction.RIGHT;
-
+    String name;
     GreenGhost greenGhost = new GreenGhost();
 
     Boolean gameStart = new Boolean(false);
@@ -36,7 +36,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
         Intent intent = getIntent();
-        String name = intent.getStringExtra("Name");
+        name = intent.getStringExtra("Name");
         int difficulty = intent.getIntExtra("Difficulty", 0);
         String sprite = intent.getStringExtra("sprite_path");
 
@@ -153,6 +153,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             }
             mHandler.post(() -> {
                 Intent intent = new Intent(getApplicationContext(), EndScreenActivity.class);
+                intent.putExtra("Name", name);
+                intent.putExtra("Score", pacman.score);
                 startActivity(intent);
             });
         }).start();
