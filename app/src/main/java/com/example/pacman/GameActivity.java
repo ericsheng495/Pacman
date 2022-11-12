@@ -71,8 +71,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         TextView roundText = findViewById(R.id.roundText);
         roundText.setText(getString(R.string.round));
 
-        ImageView spriteView = (ImageView) findViewById(R.id.spriteInGame);
-        spriteView.setImageResource(getResources().getIdentifier("@android:drawable/" + sprite, null, getPackageName()));
+        /*ImageView spriteView = (ImageView) findViewById(R.id.spriteInGame);
+        spriteView.setImageResource(getResources().getIdentifier("@android:drawable/" + sprite, null, getPackageName()));*/
 
 
         gestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {

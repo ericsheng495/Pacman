@@ -211,6 +211,7 @@ public class GameView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        mPaint.setStyle(Paint.Style.FILL);
         mPaint.setColor(Color.BLACK);
         canvas.drawPaint(mPaint);
         float ssize = mBoxSize * .5f;
@@ -223,14 +224,18 @@ public class GameView extends View {
                 int bottom = top + mBoxSize;
                 switch(getPoint(x,y).type) {
                     case PELLET:
+                        mPaint.setStyle(Paint.Style.FILL);
                         mPaint.setColor(Color.WHITE);
                         canvas.drawRect(left + (mBoxSize/2f - ssize/2), top + (mBoxSize/2f - ssize/2), left + (mBoxSize/2f + ssize/2), top + (mBoxSize/2f + ssize/2), mPaint);
                         break;
                     case POWER_PELLET:
+                        mPaint.setStyle(Paint.Style.FILL);
                         mPaint.setColor(Color.parseColor("#FC9D03"));
                         canvas.drawRect(left, top, right, bottom, mPaint);
                         break;
                     case WALL:
+                        mPaint.setStyle(Paint.Style.STROKE);
+                        mPaint.setStrokeWidth( 10f );
                         mPaint.setColor(Color.BLUE);
                         canvas.drawRect(left, top, right, bottom, mPaint);
                         break;
@@ -264,10 +269,18 @@ public class GameView extends View {
         float top = mPacMan.y;
         float bottom = top + mBoxSize;
         canvas.drawBitmap(mPacMan.getBitmap(), null, new RectF(left, top, right, bottom), mPaint);
+
+        /*mPaint.setColor( Color.RED );
+        mPaint.setStrokeWidth( 1.5f );
+        mPaint.setStyle(Paint.Style.STROKE);
+
+        canvas.drawRect( 0, 0, getWidth(), getHeight(), mPaint);*/
+
         //Text Display
         TextView scoreText = (TextView) ((GameActivity) getContext()).findViewById(R.id.scoreText);
         scoreText.setText("Score: " + mPacMan.score);
         TextView livesText = (TextView) ((GameActivity) getContext()).findViewById(R.id.livesText);
         livesText.setText("Lives: " + mPacMan.lives);
+
     }
 }
