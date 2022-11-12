@@ -237,9 +237,6 @@ public class GameView extends View {
                     case POWER_PELLET:
                         mPaint.setColor(Color.parseColor("#FC9D03"));//orange
                         break;
-                    case PACMAN:
-                        mPaint.setColor(Color.YELLOW);
-                        break;
                     case EMPTY:
                         mPaint.setColor(Color.BLACK);
                         break;

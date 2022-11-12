@@ -16,7 +16,9 @@ public class Pacman {
 
     public int lives;
     public int invincibilityTimer;
-
+    public int x;
+    public int y;
+    
     public Pacman(GameView view) {
         this.score = 0;
         this.direction = Direction.RIGHT;
