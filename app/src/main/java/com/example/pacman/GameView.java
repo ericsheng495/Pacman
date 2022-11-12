@@ -38,8 +38,10 @@ public class GameView extends View {
     private static final int MAP_SIZE = 20;
     private static final int START_X = 5;
     private static final int START_Y = 10;
+    private static final String TAG = "GameView";
 
     //Tiles and Pacman
+    Map_Layout map_layout = new Map_Layout();
     private final Point[][] mPoints = new Point[MAP_SIZE][MAP_SIZE];
     private Pacman mPacMan;
     public int pelletCount = 0;
@@ -50,6 +52,7 @@ public class GameView extends View {
     private GreenGhost mGreen = new GreenGhost();
     private MagentaGhost mMagenta = new MagentaGhost();
     private RedGhost mRed= new RedGhost();
+    private boolean spawnable = true;
 
 
     private boolean mGameWin = false;
@@ -70,7 +73,9 @@ public class GameView extends View {
         //mHandler = handler;
         //pelletQueue = new PriorityQueue<>((a, b) -> (a.x - b.x + b.y - a.y)%10);
         enemyQueue = new LinkedList<PointType>();
-        //enemyQueue.add(PointType.ENEMYMAG);
+        enemyQueue.add(PointType.ENEMYMAG);
+        enemyQueue.add(PointType.ENEMYGREEN);
+        enemyQueue.add(PointType.ENEMYRED);
         initMap();
     }
     private void initMap() {
@@ -79,8 +84,6 @@ public class GameView extends View {
                 mPoints[i][j] = new Point(j, i);
             }
         }
-
-        Map_Layout map_layout = new Map_Layout();
 
         int[][] mLayout = map_layout.getMap_layout();
 
@@ -111,7 +114,7 @@ public class GameView extends View {
                     // 5: Green
                     // 6: Magenta
                     // 7: Red
-                    case 5:
+                    /*case 5:
                         point.type = PointType.ENEMYGREEN;
                         mGreen.setPoint(point);
                         break;
@@ -122,11 +125,44 @@ public class GameView extends View {
                     case 7:
                         point.type = PointType.ENEMYRED;
                         mRed.setPoint(point);
-                        break;
+                        break;*/
                 }
             }
         }
 
+    }
+
+    public void spawnGhost(int i, int j) {
+        //
+        Log.d(TAG, "" + spawnable);
+        new Thread(() -> {
+            try {
+                if (!enemyQueue.isEmpty() && spawnable) {
+                    Point point = getPoint(j, i);
+                    if (point.type == PointType.EMPTY) {
+                        point.type = enemyQueue.remove();
+                        Thread.sleep(1000);
+                        switch (point.type) {
+                            case ENEMYGREEN:
+                                mGreen.setPoint(point);
+                                mGreen.setVisible(true);
+                                break;
+                            case ENEMYRED:
+                                mRed.setPoint(point);
+                                mRed.setVisible(true);
+                                break;
+                            case ENEMYMAG:
+                                mMagenta.setPoint(point);
+                                mMagenta.setVisible(true);
+                                break;
+                        }
+                    }
+                }
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 
     private Point getPoint(int x, int y) {
@@ -145,7 +181,25 @@ public class GameView extends View {
 
     public void enemyNext(Enemy enemy) {
         Point enemyFirst = enemy.getPoint();
-        Direction nextEnemyDir = enemy.getNext_direction();
+        Random r = new Random();
+        int randomNum = r.nextInt((4 - 1) + 1) + 1;
+        Direction nextEnemyDir = Direction.UP;
+        switch (randomNum) {
+            case 1:
+                nextEnemyDir = Direction.RIGHT;
+                break;
+            case 2:
+                nextEnemyDir = Direction.LEFT;
+                break;
+            case 3:
+                nextEnemyDir = Direction.UP;
+                break;
+            case 4:
+                nextEnemyDir = Direction.DOWN;
+                break;
+
+        }
+        //Direction nextEnemyDir = enemy.getNext_direction();
         Point enemyNext = getNext(enemyFirst, nextEnemyDir);
 
         if (nextEnemyDir != enemy.getDirection() && enemyNext.type != PointType.WALL) {
@@ -166,7 +220,12 @@ public class GameView extends View {
             enemyFirst.type = PointType.EMPTY;
             enemy.setPoint(enemyNext);
         } else {
-            if (enemyNext.type != PointType.WALL) {
+            if (enemyNext.type == PointType.PACMAN) {
+                mPacMan.lives -= 1;
+            } else if (enemyNext.type != PointType.WALL
+                    && enemyNext.type != PointType.ENEMYGREEN
+                    && enemyNext.type != PointType.ENEMYMAG
+                    && enemyNext.type != PointType.ENEMYRED) {
                 enemyNext.type = enemy.getEnemyType();
                 if (enemy.getLandedOnPellet() == 1) {
                     enemyFirst.type = PointType.PELLET;
@@ -186,9 +245,16 @@ public class GameView extends View {
     }
 
     public void enemyNext() {
-        //enemyNext(mGreen);
-        //enemyNext(mRed);
-        enemyNext(mMagenta);
+        if (mGreen.getVisible()) {
+            enemyNext(mGreen);
+        }
+        if (mRed.getVisible()) {
+            enemyNext(mRed);
+        }
+        if (mMagenta.getVisible()) {
+            enemyNext(mMagenta);
+        }
+        //enemyNext(mMagenta);
     }
 
     public void setDirection(Direction dir) {

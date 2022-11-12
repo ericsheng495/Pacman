@@ -12,7 +12,7 @@ public abstract class Enemy {
 
     public void setPoint(Point point) {
         direction = Direction.LEFT;
-        next_direction = Direction.LEFT;
+        next_direction = Direction.UP;
         location = point;
     }
 
@@ -44,6 +44,14 @@ public abstract class Enemy {
     }
 
     public abstract PointType getEnemyType();
+
+    public void setVisible(boolean visibility) {
+        visible = visibility;
+    }
+
+    public boolean getVisible() {
+        return visible;
+    }
 
     public void moveAlgo1() {
 

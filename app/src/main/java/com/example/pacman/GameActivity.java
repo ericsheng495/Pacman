@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
@@ -30,6 +31,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     GreenGhost greenGhost = new GreenGhost();
 
     Boolean gameStart = new Boolean(false);
+
+    private static final String TAG = "GameActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,6 +147,18 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         //pacman.setNext_direction(nextDirection);
                         mGameView.next(nextDirection);
                         mGameView.enemyNext();
+                        /*new Thread(() -> {
+                            try {
+                                mGameView.spawnGhost(9, 9);
+                                Log.d(TAG, "RAN SPAWNGHOST");
+                                Thread.sleep(4000);
+                                Log.d(TAG, "RAN SPAWNGHOST SLEEP THREAD");
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                                Log.d(TAG, "CAUGHT RANSPAWN GHOST EXCEPTION");
+                            }
+                        }).start();*/
+                        mGameView.spawnGhost(9, 9);
                         mHandler.post(mGameView::invalidate);
                     }
                     count++;
