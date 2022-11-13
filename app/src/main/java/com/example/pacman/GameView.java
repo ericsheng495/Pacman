@@ -1,6 +1,7 @@
 package com.example.pacman;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -57,10 +58,11 @@ public class GameView extends View {
     private boolean mGameWin = false;
     //private PriorityQueue<Point> pelletQueue;
     private LinkedList<PointType> enemyQueue;
+    public LinkedList<PointType> currentEnemies;
     //Sizing
     private int mBoxSize;
     private int mBoxPadding;
-
+    private int spawnTimer = 10;
     private Paint mPaint = new Paint();
 
     //private Handler mHandler;
@@ -74,6 +76,7 @@ public class GameView extends View {
         //pelletQueue = new PriorityQueue<>((a, b) -> (a.x - b.x + b.y - a.y)%10);
         enemyQueue = new LinkedList<PointType>();
         //enemyQueue.add(PointType.ENEMYMAG);
+        mMagenta.setBitmap(BitmapFactory.decodeResource(getContext().getResources(), R.drawable.ghost_0));
         initMap();
     }
     private void initMap() {
@@ -110,11 +113,39 @@ public class GameView extends View {
         }
         Log.d("Box size: ", "" + mBoxSize);
         mPacMan.setLocation(mBoxSize * 9, mBoxSize * 14);
-
+        mMagenta.setLocation(mBoxSize * 8, mBoxSize * 7);
     }
 
     public Point getPoint(int x, int y) {
         return mPoints[y][x];
+    }
+
+    public void spawnGhost(int i, int j) {
+        if (!enemyQueue.isEmpty() && spawnTimer <= 0) {
+            spawnTimer = 10;
+            Point point = getPoint(j, i);
+            if (point.type == PointType.EMPTY) {
+                point.type = enemyQueue.remove();
+                switch (point.type) {
+                    case ENEMYGREEN:
+                        mGreen.setPoint(point);
+                        mGreen.setVisible(true);
+                        currentEnemies.add(PointType.ENEMYGREEN);
+                        break;
+                    case ENEMYRED:
+                        mRed.setPoint(point);
+                        mRed.setVisible(true);
+                        currentEnemies.add(PointType.ENEMYRED);
+                        break;
+                    case ENEMYMAG:
+                        mMagenta.setPoint(point);
+                        mMagenta.setVisible(true);
+                        currentEnemies.add(PointType.ENEMYMAG);
+                        break;
+                }
+            }
+        }
+        spawnTimer--;
     }
 
     public void next(Direction inputDirection) {
@@ -263,12 +294,23 @@ public class GameView extends View {
             }
 
         }
-        //canvas.draw
+
         float left = mPacMan.x;
         float right = left + mBoxSize;
         float top = mPacMan.y;
         float bottom = top + mBoxSize;
         canvas.drawBitmap(mPacMan.getBitmap(), null, new RectF(left, top, right, bottom), mPaint);
+
+        if (mMagenta.getVisible()) {
+            left = mMagenta.x;
+            right = left + mBoxSize;
+            top = mMagenta.y;
+            bottom = top + mBoxSize;
+            //canvas.draw
+            canvas.drawBitmap(mMagenta.getBitmap(), null, new RectF(left, top, right, bottom), mPaint);
+
+        }
+
 
         /*mPaint.setColor( Color.RED );
         mPaint.setStrokeWidth( 1.5f );

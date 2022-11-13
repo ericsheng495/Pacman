@@ -91,6 +91,13 @@ public class Pacman {
     }
 
     public void next(Direction nextDirection) {
+        if (superTimer > 0) {
+            superTimer--;
+        } else {
+            superTimer = 0;
+            superState = false;
+        }
+
         Log.d("Pacman.grid_xy: ", x/boxSize + ", " + y/boxSize);
         Log.d("Check for wall collision: ", "" + (x%boxSize == 0 && y%boxSize == 0));
         if (x%boxSize == 0 && y%boxSize == 0) { //check for wall and pellet
@@ -122,16 +129,13 @@ public class Pacman {
             move();
         }
 
+        //check for enemy collision
+
 
         /*Point pacmanFirst = location;
         Point pacmanNext = view.getNext(pacmanFirst, nextDirection);
 
-        if (superTimer > 0) {
-            superTimer--;
-        } else {
-            superTimer = 0;
-            superState = false;
-        }
+
 
 
         if (nextDirection != direction && pacmanNext.type != PointType.WALL) {

@@ -1,18 +1,22 @@
 package com.example.pacman;
 
+import android.graphics.Bitmap;
+
 public abstract class Enemy {
     private Direction direction;
     private Direction next_direction;
     private Point location;
     private int landedOnPellet;
-    private boolean visible = false;
+    private boolean visible = true;
+    Bitmap sprite;
+
     public Enemy() {
         landedOnPellet = 0;
     }
 
     public void setPoint(Point point) {
-        direction = Direction.LEFT;
-        next_direction = Direction.LEFT;
+        //direction = Direction.LEFT;
+        //next_direction = Direction.LEFT;
         location = point;
     }
 
@@ -42,6 +46,11 @@ public abstract class Enemy {
     public int getLandedOnPellet() {
         return landedOnPellet;
     }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+    public boolean getVisible() { return visible; }
 
     public abstract PointType getEnemyType();
 
