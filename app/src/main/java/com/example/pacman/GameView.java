@@ -12,6 +12,7 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.Random;
@@ -200,6 +201,21 @@ public class GameView extends View {
             mGameWin = true;
         }
     }
+
+//    public ArrayList<Direction> getEnemyPath(Enemy enemy){
+//        ArrayList<Direction> paths = new ArrayList<>();
+//        Point enemyPoint =  enemy.getPoint();
+//
+//        for (Direction direction : Direction.values()) {
+//            Point enemyNext = getNext(enemyPoint, direction);
+//            if(enemyNext.type != PointType.WALL){
+//                paths.add(direction);
+//            }
+//        }
+//        return paths;
+//    }
+
+
 
     public void enemyNext(Enemy enemy) {
         Point enemyFirst = enemy.getPoint();
