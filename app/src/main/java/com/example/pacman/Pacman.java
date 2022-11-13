@@ -73,6 +73,15 @@ public class Pacman {
         Log.d("Pacman speed: ", "" + vel);
     }
 
+    private boolean collide(float x1, float y1, float e_x1, float e_y1) {
+        //https://stackoverflow.com/a/31035335/19170967
+        float x2 = x1 + boxSize;
+        float y2 = y1 + boxSize;
+        float e_x2 = e_x1 + boxSize/1.5f;
+        float e_y2 = e_y1 + boxSize/1.5f;
+        return (x1 < e_x2 && x2 > e_x1 &&
+                y1 < e_y2 && y2 > e_y1);
+    }
     private void move() {
         switch (direction) {
             case UP:
@@ -106,7 +115,7 @@ public class Pacman {
                 case PELLET:
                     //Add Points
                     score += 50;
-                    lives = 0; //debug
+                    //lives = 0; //debug
                     currentBlock.type = PointType.EMPTY;
                     break;
                 case POWER_PELLET:
@@ -130,6 +139,16 @@ public class Pacman {
         }
 
         //check for enemy collision
+        for (int i = 0; i < view.enemies.length; i++) {
+            if (view.enemies[i].getVisible()) {
+                float e_x = view.enemies[i].x;
+                float e_y = view.enemies[i].y;
+                if (collide(x, y, e_x, e_y)) {
+                    lives = 0;
+                    break;
+                }
+            }
+        }
 
 
         /*Point pacmanFirst = location;

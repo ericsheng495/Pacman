@@ -58,7 +58,7 @@ public class GameView extends View {
     private boolean mGameWin = false;
     //private PriorityQueue<Point> pelletQueue;
     private LinkedList<PointType> enemyQueue;
-    public LinkedList<PointType> currentEnemies;
+    public Enemy[] enemies;
     //Sizing
     private int mBoxSize;
     private int mBoxPadding;
@@ -72,11 +72,11 @@ public class GameView extends View {
         mBoxPadding = mBoxSize / 20;
         mPacMan = pacman;
         mPacMan.setBoxSize(mBoxSize);
-        //mHandler = handler;
         //pelletQueue = new PriorityQueue<>((a, b) -> (a.x - b.x + b.y - a.y)%10);
         enemyQueue = new LinkedList<PointType>();
         //enemyQueue.add(PointType.ENEMYMAG);
         mMagenta.setBitmap(BitmapFactory.decodeResource(getContext().getResources(), R.drawable.ghost_0));
+        enemies = new Enemy[]{mMagenta};
         initMap();
     }
     private void initMap() {
@@ -130,17 +130,14 @@ public class GameView extends View {
                     case ENEMYGREEN:
                         mGreen.setPoint(point);
                         mGreen.setVisible(true);
-                        currentEnemies.add(PointType.ENEMYGREEN);
                         break;
                     case ENEMYRED:
                         mRed.setPoint(point);
                         mRed.setVisible(true);
-                        currentEnemies.add(PointType.ENEMYRED);
                         break;
                     case ENEMYMAG:
                         mMagenta.setPoint(point);
                         mMagenta.setVisible(true);
-                        currentEnemies.add(PointType.ENEMYMAG);
                         break;
                 }
             }

@@ -8,6 +8,8 @@ public abstract class Enemy {
     private Point location;
     private int landedOnPellet;
     private boolean visible = true;
+    float x;
+    float y;
     Bitmap sprite;
 
     public Enemy() {
@@ -56,6 +58,11 @@ public abstract class Enemy {
 
     public void moveAlgo1() {
 
+    }
+
+    public void setLocation(float x, float y) {
+        this.x = x;
+        this.y = y;
     }
 
 }
