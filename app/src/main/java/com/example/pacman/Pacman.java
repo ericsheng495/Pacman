@@ -19,7 +19,7 @@ public class Pacman {
 
     public Pacman(GameView view) {
         this.score = 0;
-        this.direction = Direction.RIGHT;
+        this.direction = Direction.LEFT;
         this.superState = false;
         this.lives = 3;
         superTimer = 0;

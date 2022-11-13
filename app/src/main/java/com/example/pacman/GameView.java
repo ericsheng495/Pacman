@@ -52,7 +52,7 @@ public class GameView extends View {
     private GreenGhost mGreen = new GreenGhost();
     private MagentaGhost mMagenta = new MagentaGhost();
     private RedGhost mRed= new RedGhost();
-    private boolean spawnable = true;
+    private int spawnTimer = 0;
 
 
     private boolean mGameWin = false;
@@ -134,8 +134,8 @@ public class GameView extends View {
 
     public void spawnGhost(int i, int j) {
         //
-        Log.d(TAG, "" + spawnable);
-        new Thread(() -> {
+        Log.d(TAG, "" + spawnTimer);
+        /*new Thread(() -> {
             try {
                 if (!enemyQueue.isEmpty() && spawnable) {
                     Point point = getPoint(j, i);
@@ -162,7 +162,29 @@ public class GameView extends View {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }).start();
+        }).start();*/
+        if (!enemyQueue.isEmpty() && spawnTimer <= 0) {
+            spawnTimer = 10;
+            Point point = getPoint(j, i);
+            if (point.type == PointType.EMPTY) {
+                point.type = enemyQueue.remove();
+                switch (point.type) {
+                    case ENEMYGREEN:
+                        mGreen.setPoint(point);
+                        mGreen.setVisible(true);
+                        break;
+                    case ENEMYRED:
+                        mRed.setPoint(point);
+                        mRed.setVisible(true);
+                        break;
+                    case ENEMYMAG:
+                        mMagenta.setPoint(point);
+                        mMagenta.setVisible(true);
+                        break;
+                }
+            }
+        }
+        spawnTimer--;
     }
 
     private Point getPoint(int x, int y) {
@@ -254,7 +276,6 @@ public class GameView extends View {
         if (mMagenta.getVisible()) {
             enemyNext(mMagenta);
         }
-        //enemyNext(mMagenta);
     }
 
     public void setDirection(Direction dir) {
