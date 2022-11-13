@@ -40,7 +40,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         Intent intent = getIntent();
         name = intent.getStringExtra("Name");
         int difficulty = intent.getIntExtra("Difficulty", 0);
-        String sprite = intent.getStringExtra("sprite_path");
+        int sprite = intent.getIntExtra("sprite_path", R.drawable.sprite_pacman);
 
 
         findViewById(R.id.up_button).setOnClickListener(v ->
@@ -111,7 +111,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             }
         };*/
         mGameView = findViewById(R.id.game_view);
-        Bitmap pacman_sprite = BitmapFactory.decodeResource(getResources(), R.drawable.sprite_pacman);
+        Bitmap pacman_sprite = BitmapFactory.decodeResource(getResources(), sprite);
         pacman = new Pacman(mGameView, pacman_sprite);
         mGameView.init(pacman);
         startGame();

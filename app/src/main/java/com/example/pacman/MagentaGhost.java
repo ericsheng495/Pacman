@@ -5,4 +5,5 @@ public class MagentaGhost extends Enemy {
     public PointType getEnemyType() {
         return PointType.ENEMYMAG;
     }
+
 }

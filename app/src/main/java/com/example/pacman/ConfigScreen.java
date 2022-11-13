@@ -26,12 +26,15 @@ public class ConfigScreen extends AppCompatActivity {
     private Button nextButton;
 
     private int currentSprite = 0;
-    private String[] sprites = {
+    /*private String[] sprites = {
             "ic_menu_edit",
             "ic_menu_delete",
             "ic_menu_directions"
+    };*/
+    private int[] sprites = {
+            R.drawable.sprite_pacman,
+            R.drawable.sprite_pacman_2
     };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,17 +97,20 @@ public class ConfigScreen extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        setPlayerSprite(0);
     }
 
     void setPlayerSprite(int next) {
         currentSprite += next;
         if (currentSprite < 0) {
-            currentSprite = 2;
+            currentSprite = sprites.length - 1;
         } else {
-            currentSprite = currentSprite%3;
+            currentSprite = currentSprite%(sprites.length);
         }
 
         ImageView sprite = (ImageView) findViewById(R.id.playerSprite);
-        sprite.setImageResource(getResources().getIdentifier("@android:drawable/" + sprites[currentSprite], null, getPackageName()));
+        sprite.setImageResource(sprites[currentSprite]);
+        //sprite.setImageResource(getResources().getIdentifier("@android:drawable/" + sprites[currentSprite], null, getPackageName()));
     }
 }
