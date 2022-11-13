@@ -53,8 +53,6 @@ public abstract class Enemy {
         return visible;
     }
 
-    public void moveAlgo1() {
-
-    }
+    public abstract void moveAlgo1(Pacman p);
 
 }

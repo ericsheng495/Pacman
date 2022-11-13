@@ -50,9 +50,9 @@ public class GameView extends View {
     private boolean mGameOver = false;
 
     //Enemies
-    private GreenGhost mGreen = new GreenGhost();
-    private MagentaGhost mMagenta = new MagentaGhost();
-    private RedGhost mRed= new RedGhost();
+    private GreenGhost mGreen = new GreenGhost(this);
+    private MagentaGhost mMagenta = new MagentaGhost(this);
+    private RedGhost mRed= new RedGhost(this);
     private int spawnTimer = 0;
 
 
@@ -202,49 +202,33 @@ public class GameView extends View {
         }
     }
 
-//    public ArrayList<Direction> getEnemyPath(Enemy enemy){
-//        ArrayList<Direction> paths = new ArrayList<>();
-//        Point enemyPoint =  enemy.getPoint();
-//
-//        for (Direction direction : Direction.values()) {
-//            Point enemyNext = getNext(enemyPoint, direction);
-//            if(enemyNext.type != PointType.WALL){
-//                paths.add(direction);
-//            }
-//        }
-//        return paths;
-//    }
+    public ArrayList<Direction> getEnemyPath(Enemy enemy){
+        ArrayList<Direction> paths = new ArrayList<>();
+        Point enemyPoint =  enemy.getPoint();
+
+        for (Direction direction : Direction.values()) {
+            Point enemyNext = getNext(enemyPoint, direction);
+            if(enemyNext.type != PointType.WALL){
+                paths.add(direction);
+            }
+        }
+        return paths;
+    }
 
 
 
     public void enemyNext(Enemy enemy) {
         Point enemyFirst = enemy.getPoint();
-        Random r = new Random();
-        int randomNum = r.nextInt((4 - 1) + 1) + 1;
         Direction nextEnemyDir = Direction.UP;
-        switch (randomNum) {
-            case 1:
-                nextEnemyDir = Direction.RIGHT;
-                break;
-            case 2:
-                nextEnemyDir = Direction.LEFT;
-                break;
-            case 3:
-                nextEnemyDir = Direction.UP;
-                break;
-            case 4:
-                nextEnemyDir = Direction.DOWN;
-                break;
-
-        }
         //Direction nextEnemyDir = enemy.getNext_direction();
-        Point enemyNext = getNext(enemyFirst, nextEnemyDir);
-
-        if (nextEnemyDir != enemy.getDirection() && enemyNext.type != PointType.WALL) {
-            //refactor
-            enemy.setDirection(nextEnemyDir);
-        }
-        enemyNext = getNext(enemyFirst, enemy.getDirection());
+//        Point enemyNext = getNext(enemyFirst, nextEnemyDir);
+//
+//        if (nextEnemyDir != enemy.getDirection() && enemyNext.type != PointType.WALL) {
+//            //refactor
+//            enemy.setDirection(nextEnemyDir);
+//        }
+        enemy.moveAlgo1(mPacMan);
+        Point enemyNext = getNext(enemyFirst, enemy.getNext_direction());
         if (enemyNext.type == PointType.PELLET) {
             //landedOnPellet = 1;
             enemy.setLandedOnPellet(1);
@@ -260,10 +244,7 @@ public class GameView extends View {
         } else {
             if (enemyNext.type == PointType.PACMAN) {
                 mPacMan.lives -= 1;
-            } else if (enemyNext.type != PointType.WALL
-                    && enemyNext.type != PointType.ENEMYGREEN
-                    && enemyNext.type != PointType.ENEMYMAG
-                    && enemyNext.type != PointType.ENEMYRED) {
+            } else {
                 enemyNext.type = enemy.getEnemyType();
                 if (enemy.getLandedOnPellet() == 1) {
                     enemyFirst.type = PointType.PELLET;
