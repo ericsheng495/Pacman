@@ -34,6 +34,7 @@ public class Pacman {
     public void setSpawnPoint(Point point) {
         spawnPoint = point;
     }
+    public Point getSpawnPoint() {return spawnPoint;}
     public Point getPoint() {
         return location;
     }
@@ -74,12 +75,12 @@ public class Pacman {
             case PELLET:
                 //Add Points
                 score += 50;
-                //lives = 0; //debug
+                //lives = 0;
                 break;
             case POWER_PELLET:
                 //Add Points + Super
                 score += 100;
-                superState = true;
+                //superState = true;
                 superTimer = 20;
                 break;
             case ENEMYRED:
@@ -87,6 +88,8 @@ public class Pacman {
             case ENEMYMAG:
                 if (!superState) {
                     lives--;
+                    view.resetMap();
+                    return;
                 } else {
                     score += 200;
                     //view.enemyQueue.add(pacmanNext.type);

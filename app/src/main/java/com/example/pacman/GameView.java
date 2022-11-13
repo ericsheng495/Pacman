@@ -117,6 +117,26 @@ public class GameView extends View {
 
     }
 
+    public void resetMap() {
+        mPacMan.getPoint().type = PointType.EMPTY;
+        mGreen.getPoint().type = PointType.EMPTY;
+        mRed.getPoint().type = PointType.EMPTY;
+        mMagenta.getPoint().type = PointType.EMPTY;
+        mPacMan.setPoint(mPacMan.getSpawnPoint());
+        mPacMan.getPoint().type = PointType.PACMAN;
+        mGreen.setVisible(false);
+        mRed.setVisible(false);
+        mMagenta.setVisible(false);
+        mGreen.setPoint(new Point(0, 0));
+        mRed.setPoint(new Point(0, 0));
+        mMagenta.setPoint(new Point(0, 0));
+        enemyQueue.clear();
+        enemyQueue.add(PointType.ENEMYMAG);
+        enemyQueue.add(PointType.ENEMYRED);
+        enemyQueue.add(PointType.ENEMYGREEN);
+
+    }
+
     public void spawnGhost(int i, int j) {
         if (!enemyQueue.isEmpty() && spawnTimer <= 0) {
             spawnTimer = 10;
@@ -191,6 +211,7 @@ public class GameView extends View {
         } else {
             if (enemyNext.type == PointType.PACMAN) {
                 mPacMan.lives -= 1;
+                this.resetMap();
             } else {
                 enemyNext.type = enemy.getEnemyType();
                 if (enemy.getLandedOnPellet() == 1) {
