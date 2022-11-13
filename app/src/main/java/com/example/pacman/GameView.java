@@ -111,22 +111,6 @@ public class GameView extends View {
                         mPacMan.setPoint(point);
                         mPacMan.setSpawnPoint(point);
                         break;
-                    //Ghost IDS:
-                    // 5: Green
-                    // 6: Magenta
-                    // 7: Red
-                    /*case 5:
-                        point.type = PointType.ENEMYGREEN;
-                        mGreen.setPoint(point);
-                        break;
-                    case 6:
-                        point.type = PointType.ENEMYMAG;
-                        mMagenta.setPoint(point);
-                        break;
-                    case 7:
-                        point.type = PointType.ENEMYRED;
-                        mRed.setPoint(point);
-                        break;*/
                 }
             }
         }
@@ -134,36 +118,6 @@ public class GameView extends View {
     }
 
     public void spawnGhost(int i, int j) {
-        //
-        Log.d(TAG, "" + spawnTimer);
-        /*new Thread(() -> {
-            try {
-                if (!enemyQueue.isEmpty() && spawnable) {
-                    Point point = getPoint(j, i);
-                    if (point.type == PointType.EMPTY) {
-                        point.type = enemyQueue.remove();
-                        Thread.sleep(1000);
-                        switch (point.type) {
-                            case ENEMYGREEN:
-                                mGreen.setPoint(point);
-                                mGreen.setVisible(true);
-                                break;
-                            case ENEMYRED:
-                                mRed.setPoint(point);
-                                mRed.setVisible(true);
-                                break;
-                            case ENEMYMAG:
-                                mMagenta.setPoint(point);
-                                mMagenta.setVisible(true);
-                                break;
-                        }
-                    }
-                }
-
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }).start();*/
         if (!enemyQueue.isEmpty() && spawnTimer <= 0) {
             spawnTimer = 10;
             Point point = getPoint(j, i);
@@ -220,13 +174,6 @@ public class GameView extends View {
     public void enemyNext(Enemy enemy) {
         Point enemyFirst = enemy.getPoint();
         Direction nextEnemyDir = Direction.UP;
-        //Direction nextEnemyDir = enemy.getNext_direction();
-//        Point enemyNext = getNext(enemyFirst, nextEnemyDir);
-//
-//        if (nextEnemyDir != enemy.getDirection() && enemyNext.type != PointType.WALL) {
-//            //refactor
-//            enemy.setDirection(nextEnemyDir);
-//        }
         enemy.moveAlgo1(mPacMan);
         Point enemyNext = getNext(enemyFirst, enemy.getNext_direction());
         if (enemyNext.type == PointType.PELLET) {

@@ -6,7 +6,7 @@ import java.util.Random;
 
 public class MagentaGhost extends Enemy {
     private GameView g;
-    public int changeDirection = 5;
+    public int changeDirection = 2;
     public MagentaGhost (GameView g) {
         this.g = g;
     }
@@ -46,7 +46,8 @@ public class MagentaGhost extends Enemy {
                 int n = rand.nextInt(available_dir.size());
                 this.setNext_direction(available_dir.get(n));
             }
-            changeDirection = 5;
+            Log.d("Enemy:", "Enemy Direction: " + this.getDirection());
+            changeDirection = 2;
         }
         else {
             changeDirection--;

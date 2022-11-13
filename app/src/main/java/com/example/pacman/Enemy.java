@@ -1,8 +1,8 @@
 package com.example.pacman;
 
 public abstract class Enemy {
-    private Direction direction;
-    private Direction next_direction;
+    private Direction direction = Direction.UP;
+    private Direction next_direction = Direction.UP;
     private Point location;
     private int landedOnPellet;
     private boolean visible = false;
@@ -11,8 +11,6 @@ public abstract class Enemy {
     }
 
     public void setPoint(Point point) {
-        direction = Direction.LEFT;
-        next_direction = Direction.UP;
         location = point;
     }
 

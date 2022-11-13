@@ -27,9 +27,9 @@ public class GreenGhost extends Enemy {
         if (changeDirection == 0 || !available_dir.contains(this.getNext_direction())) {
             if (rand_num != 0) {
                 //Go toward Pacman
-                if (available_dir.contains(Direction.LEFT) && x <= 0) {
+                if (available_dir.contains(Direction.LEFT) && x > 0) {
                     this.setNext_direction(Direction.LEFT);
-                } else if (available_dir.contains(Direction.RIGHT) && x > 0) {
+                } else if (available_dir.contains(Direction.RIGHT) && x <= 0) {
                     this.setNext_direction(Direction.RIGHT);
                 } else if (available_dir.contains(Direction.UP) && y > 0) {
                     this.setNext_direction(Direction.UP);
