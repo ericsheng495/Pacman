@@ -3,13 +3,14 @@ package com.example.pacman;
 import android.graphics.Bitmap;
 
 public abstract class Enemy {
-    private Direction direction;
+    private Direction direction = Direction.UP;
     private Direction next_direction;
     private Point location;
     private int landedOnPellet;
-    private boolean visible = true;
+    private boolean visible = false;
     float x;
     float y;
+    float vel;
     Bitmap sprite;
 
     public Enemy() {
@@ -38,9 +39,9 @@ public abstract class Enemy {
         return direction;
     }
 
-    public Direction getNext_direction(){
-        return next_direction;
-    }
+    //public Direction getNext_direction(){
+    //    return next_direction;
+    //}
 
     public void setLandedOnPellet(int i) {
         landedOnPellet = i;
@@ -56,13 +57,29 @@ public abstract class Enemy {
 
     public abstract PointType getEnemyType();
 
-    public void moveAlgo1() {
-
-    }
-
+    public abstract void moveAlgo1(Pacman p);
+    public abstract Bitmap getBitmap();
     public void setLocation(float x, float y) {
         this.x = x;
         this.y = y;
+    }
+
+    public void move() {
+        float vel = GameView.mBoxSize/8.0f;
+        switch (direction) {
+            case UP:
+                y = (y - vel < 0) ? (GameView.MAP_SIZE * GameView.mBoxSize - vel) : y - vel;
+                break;
+            case DOWN:
+                y = (y + vel >= GameView.MAP_SIZE * GameView.mBoxSize) ? vel : y + vel;
+                break;
+            case LEFT:
+                x = (x - vel < 0) ? (GameView.MAP_SIZE * GameView.mBoxSize - vel) : x - vel;
+                break;
+            case RIGHT:
+                x = (x + vel >= GameView.MAP_SIZE * GameView.mBoxSize) ? vel : x + vel;
+                break;
+        }
     }
 
 }

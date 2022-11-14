@@ -29,7 +29,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     Pacman pacman;
     Direction nextDirection = Direction.RIGHT;
     String name;
-    GreenGhost greenGhost = new GreenGhost();
+    //GreenGhost greenGhost = new GreenGhost();
 
     Boolean gameStart = new Boolean(false);
 

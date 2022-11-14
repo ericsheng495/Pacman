@@ -15,6 +15,7 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.Random;
@@ -50,9 +51,9 @@ public class GameView extends View {
     private boolean mGameOver = false;
 
     //Enemies
-    private GreenGhost mGreen = new GreenGhost();
-    private MagentaGhost mMagenta = new MagentaGhost();
-    private RedGhost mRed= new RedGhost();
+    private GreenGhost mGreen = new GreenGhost(this);
+    private MagentaGhost mMagenta = new MagentaGhost(this);
+    private RedGhost mRed= new RedGhost(this);
 
 
     private boolean mGameWin = false;
@@ -60,7 +61,7 @@ public class GameView extends View {
     private LinkedList<PointType> enemyQueue;
     public Enemy[] enemies;
     //Sizing
-    private int mBoxSize;
+    public static int mBoxSize;
     private int mBoxPadding;
     private int spawnTimer = 10;
     private Paint mPaint = new Paint();
@@ -74,9 +75,14 @@ public class GameView extends View {
         mPacMan.setBoxSize(mBoxSize);
         //pelletQueue = new PriorityQueue<>((a, b) -> (a.x - b.x + b.y - a.y)%10);
         enemyQueue = new LinkedList<PointType>();
-        //enemyQueue.add(PointType.ENEMYMAG);
+        enemyQueue.add(PointType.ENEMYMAG);
+        enemyQueue.add(PointType.ENEMYRED);
+        enemyQueue.add(PointType.ENEMYGREEN);
         mMagenta.setBitmap(BitmapFactory.decodeResource(getContext().getResources(), R.drawable.ghost_0));
-        enemies = new Enemy[]{mMagenta};
+        mRed.setBitmap(BitmapFactory.decodeResource(getContext().getResources(), R.drawable.ghost_1));
+        mGreen.setBitmap(BitmapFactory.decodeResource(getContext().getResources(), R.drawable.ghost_2));
+        //mMagenta.setVisible(true);
+        enemies = new Enemy[]{mMagenta, mRed, mGreen};
         initMap();
     }
     private void initMap() {
@@ -114,6 +120,8 @@ public class GameView extends View {
         Log.d("Box size: ", "" + mBoxSize);
         mPacMan.setLocation(mBoxSize * 9, mBoxSize * 14);
         mMagenta.setLocation(mBoxSize * 8, mBoxSize * 7);
+        mRed.setLocation(mBoxSize * 8, mBoxSize * 7);
+        mGreen.setLocation(mBoxSize * 8, mBoxSize * 7);
     }
 
     public Point getPoint(int x, int y) {
@@ -122,21 +130,20 @@ public class GameView extends View {
 
     public void spawnGhost(int i, int j) {
         if (!enemyQueue.isEmpty() && spawnTimer <= 0) {
-            spawnTimer = 10;
+
+            spawnTimer = 60;
             Point point = getPoint(j, i);
             if (point.type == PointType.EMPTY) {
-                point.type = enemyQueue.remove();
-                switch (point.type) {
+                PointType enemy = enemyQueue.remove();
+                Log.d("Spawning Enemy", "" + enemy);
+                switch (enemy) {
                     case ENEMYGREEN:
-                        mGreen.setPoint(point);
                         mGreen.setVisible(true);
                         break;
                     case ENEMYRED:
-                        mRed.setPoint(point);
                         mRed.setVisible(true);
                         break;
                     case ENEMYMAG:
-                        mMagenta.setPoint(point);
                         mMagenta.setVisible(true);
                         break;
                 }
@@ -146,8 +153,9 @@ public class GameView extends View {
     }
 
     public void next(Direction inputDirection) {
+        spawnGhost(8, 7);
         mPacMan.next(inputDirection);
-
+        enemyNext();
         if (mPacMan.lives <= 0) {
             mGameOver = true;
         } else if (pelletCount <= 0) {
@@ -155,7 +163,7 @@ public class GameView extends View {
         }
     }
 
-    public void enemyNext(Enemy enemy) {
+    /*public void enemyNext(Enemy enemy) {
         Point enemyFirst = enemy.getPoint();
         Direction nextEnemyDir = enemy.getNext_direction();
         Point enemyNext = getNext(enemyFirst, nextEnemyDir);
@@ -195,12 +203,15 @@ public class GameView extends View {
             }
         }
 
-    }
+    }*/
 
     public void enemyNext() {
         //enemyNext(mGreen);
         //enemyNext(mRed);
-        enemyNext(mMagenta);
+        //enemyNext(mMagenta);
+        if (mMagenta.getVisible()) mMagenta.moveAlgo1(mPacMan);
+        if (mRed.getVisible()) mRed.moveAlgo1(mPacMan);
+        if (mGreen.getVisible()) mGreen.moveAlgo1(mPacMan);
     }
 
     public void setDirection(Direction dir) {
@@ -235,6 +246,19 @@ public class GameView extends View {
     public boolean isGameWin() {
         return mGameWin;
     }
+
+    public ArrayList<Direction> getEnemyPath(Point enemyPoint){
+        ArrayList<Direction> paths = new ArrayList<>();
+
+        for (Direction direction : Direction.values()) {
+            Point enemyNext = getNext(enemyPoint, direction);
+            if(enemyNext.type != PointType.WALL){
+                paths.add(direction);
+            }
+        }
+        return paths;
+    }
+
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -298,14 +322,16 @@ public class GameView extends View {
         float bottom = top + mBoxSize;
         canvas.drawBitmap(mPacMan.getBitmap(), null, new RectF(left, top, right, bottom), mPaint);
 
-        if (mMagenta.getVisible()) {
-            left = mMagenta.x;
-            right = left + mBoxSize;
-            top = mMagenta.y;
-            bottom = top + mBoxSize;
-            //canvas.draw
-            canvas.drawBitmap(mMagenta.getBitmap(), null, new RectF(left, top, right, bottom), mPaint);
+        for (int i = 0; i < enemies.length; i++) {
+            if (enemies[i].getVisible()) {
+                left = enemies[i].x;
+                right = left + mBoxSize;
+                top = enemies[i].y;
+                bottom = top + mBoxSize;
+                //canvas.draw
+                canvas.drawBitmap(enemies[i].getBitmap(), null, new RectF(left, top, right, bottom), mPaint);
 
+            }
         }
 
 
@@ -322,4 +348,5 @@ public class GameView extends View {
         livesText.setText("Lives: " + mPacMan.lives);
 
     }
+
 }

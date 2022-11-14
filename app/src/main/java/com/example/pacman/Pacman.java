@@ -108,7 +108,9 @@ public class Pacman {
         }
 
         Log.d("Pacman.grid_xy: ", x/boxSize + ", " + y/boxSize);
-        Log.d("Check for wall collision: ", "" + (x%boxSize == 0 && y%boxSize == 0));
+        Log.d("Pacman.xy: ", x + ", " + y);
+        Log.d("Collision check", "" + x%boxSize);
+        //Log.d("Check for wall collision: ", "" + (x%boxSize == 0 && y%boxSize == 0));
         if (x%boxSize == 0 && y%boxSize == 0) { //check for wall and pellet
             Point currentBlock = view.getPoint((int)x/boxSize, (int)y/boxSize);
             switch (currentBlock.type) {
