@@ -35,7 +35,7 @@ public class GreenGhost extends Enemy {
             int rand_num = rand.nextInt(4);
 
             if (changeDirection == 0 || !available_dir.contains(this.getDirection())) {
-                Log.d("Magenta ghost changeDir: ", "" + this.getDirection().name());
+               // Log.d("Magenta ghost changeDir: ", "" + this.getDirection().name());
                 if (rand_num != 0) {
                     //Go toward Pacman
                     if (available_dir.contains(Direction.LEFT) && dir_x > 0) {
@@ -54,7 +54,7 @@ public class GreenGhost extends Enemy {
                     int n = rand.nextInt(available_dir.size());
                     this.setDirection(available_dir.get(n));
                 }
-                Log.d("Enemy:", "Enemy Direction: " + this.getDirection());
+                //Log.d("Enemy:", "Enemy Direction: " + this.getDirection());
                 changeDirection = 8;
             } else {
                 changeDirection--;

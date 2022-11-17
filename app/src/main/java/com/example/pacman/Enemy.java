@@ -3,7 +3,7 @@ package com.example.pacman;
 import android.graphics.Bitmap;
 
 public abstract class Enemy {
-    private Direction direction = Direction.UP;
+    private Direction direction = Direction.RIGHT;
     private Direction next_direction;
     private Point location;
     private int landedOnPellet;

@@ -54,7 +54,7 @@ public class GameView extends View {
     private GreenGhost mGreen = new GreenGhost(this);
     private MagentaGhost mMagenta = new MagentaGhost(this);
     private RedGhost mRed= new RedGhost(this);
-
+    private YellowGhost mYellow = new YellowGhost(this);
 
     private boolean mGameWin = false;
     //private PriorityQueue<Point> pelletQueue;
@@ -76,13 +76,15 @@ public class GameView extends View {
         //pelletQueue = new PriorityQueue<>((a, b) -> (a.x - b.x + b.y - a.y)%10);
         enemyQueue = new LinkedList<PointType>();
         enemyQueue.add(PointType.ENEMYMAG);
-        enemyQueue.add(PointType.ENEMYRED);
         enemyQueue.add(PointType.ENEMYGREEN);
+        enemyQueue.add(PointType.ENEMYYELLOW);
+        enemyQueue.add(PointType.ENEMYRED);
         mMagenta.setBitmap(BitmapFactory.decodeResource(getContext().getResources(), R.drawable.ghost_0));
         mRed.setBitmap(BitmapFactory.decodeResource(getContext().getResources(), R.drawable.ghost_1));
         mGreen.setBitmap(BitmapFactory.decodeResource(getContext().getResources(), R.drawable.ghost_2));
+        mYellow.setBitmap(BitmapFactory.decodeResource(getContext().getResources(), R.drawable.ghost_3));
         //mMagenta.setVisible(true);
-        enemies = new Enemy[]{mMagenta, mRed, mGreen};
+        enemies = new Enemy[]{mMagenta, mRed, mGreen, mYellow};
         initMap();
     }
     private void initMap() {
@@ -120,8 +122,9 @@ public class GameView extends View {
         Log.d("Box size: ", "" + mBoxSize);
         mPacMan.setLocation(mBoxSize * 9, mBoxSize * 14);
         mMagenta.setLocation(mBoxSize * 8, mBoxSize * 7);
-        mRed.setLocation(mBoxSize * 8, mBoxSize * 7);
         mGreen.setLocation(mBoxSize * 8, mBoxSize * 7);
+        mYellow.setLocation(mBoxSize * 8, mBoxSize * 7);
+        mRed.setLocation(mBoxSize * 8, mBoxSize * 7);
     }
 
     public Point getPoint(int x, int y) {
@@ -145,6 +148,9 @@ public class GameView extends View {
                         break;
                     case ENEMYMAG:
                         mMagenta.setVisible(true);
+                        break;
+                    case ENEMYYELLOW:
+                        mYellow.setVisible(true);
                         break;
                 }
             }
@@ -212,6 +218,7 @@ public class GameView extends View {
         if (mMagenta.getVisible()) mMagenta.moveAlgo1(mPacMan);
         if (mRed.getVisible()) mRed.moveAlgo1(mPacMan);
         if (mGreen.getVisible()) mGreen.moveAlgo1(mPacMan);
+        if (mYellow.getVisible()) mYellow.moveAlgo1(mPacMan);
     }
 
     public void setDirection(Direction dir) {

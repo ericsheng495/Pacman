@@ -159,7 +159,7 @@ public class Pacman {
                 float e_x = view.enemies[i].x;
                 float e_y = view.enemies[i].y;
                 if (collide(x, y, e_x, e_y)) {
-                    lives = 0;
+                    //lives = 0;
                     break;
                 }
             }
