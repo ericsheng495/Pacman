@@ -84,8 +84,8 @@ public class MagentaGhost extends Enemy {
     @Override
     public void moveAlgo1(Pacman p) {
         if (x%GameView.mBoxSize == 0 && y%GameView.mBoxSize == 0) {
-            float dir_x = x - p.x;
-            float dir_y = y - p.y;
+            float dir_x = x - (float) p.x;
+            float dir_y = y - (float) p.y;
             Random rand = new Random();
             ArrayList<Direction> available_dir = g.getEnemyPath(g.getPoint((int)x/GameView.mBoxSize, (int)y/GameView.mBoxSize));
             int rand_num = rand.nextInt(4);

@@ -82,19 +82,32 @@ public class Pacman {
         return (x1 < e_x2 && x2 > e_x1 &&
                 y1 < e_y2 && y2 > e_y1);
     }
+
+    private float roundFloat(float number, int scale) {
+        int pow = 10;
+        for (int i = 1; i < scale; i++)
+            pow *= 10;
+        float tmp = number * pow;
+        return ( (float) ( (int) ((tmp - (int) tmp) >= 0.5f ? tmp + 1 : tmp) ) ) / pow;
+    }
+
     private void move() {
         switch (direction) {
             case UP:
                 y = (y - vel < 0) ? (GameView.MAP_SIZE * boxSize - vel) : y - vel;
+                //y = roundFloat(y, 2);
                 break;
             case DOWN:
                 y = (y + vel >= GameView.MAP_SIZE * boxSize) ? vel : y + vel;
+                //y = roundFloat(y, 2);
                 break;
             case LEFT:
                 x = (x - vel < 0) ? (GameView.MAP_SIZE * boxSize - vel) : x - vel;
+                //x = roundFloat(x, 2);
                 break;
             case RIGHT:
                 x = (x + vel >= GameView.MAP_SIZE * boxSize) ? vel : x + vel;
+                //x = roundFloat(x, 2);
                 break;
         }
     }
@@ -107,9 +120,9 @@ public class Pacman {
             superState = false;
         }
 
-        Log.d("Pacman.grid_xy: ", x/boxSize + ", " + y/boxSize);
-        Log.d("Pacman.xy: ", x + ", " + y);
-        Log.d("Collision check", "" + x%boxSize);
+        //Log.d("Pacman.grid_xy: ", x/boxSize + ", " + y/boxSize);
+        //Log.d("Pacman.xy: ", x + ", " + y);
+        //Log.d("Collision check", "" + x%boxSize + "," + y%boxSize + "\n");
         //Log.d("Check for wall collision: ", "" + (x%boxSize == 0 && y%boxSize == 0));
         if (x%boxSize == 0 && y%boxSize == 0) { //check for wall and pellet
             Point currentBlock = view.getPoint((int)x/boxSize, (int)y/boxSize);

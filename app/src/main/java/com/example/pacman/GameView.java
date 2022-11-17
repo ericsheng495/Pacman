@@ -259,6 +259,35 @@ public class GameView extends View {
         return paths;
     }
 
+    public ArrayList<Direction> getEnemyPath(Point enemyPoint, Direction dir){
+        ArrayList<Direction> paths = new ArrayList<>();
+        Direction skip = Direction.DOWN;
+        switch (dir) {
+            case UP:
+                skip = Direction.DOWN;
+                break;
+            case DOWN:
+                skip = Direction.UP;
+                break;
+            case LEFT:
+                skip = Direction.RIGHT;
+                break;
+            case RIGHT:
+                skip = Direction.LEFT;
+                break;
+        }
+
+        for (Direction direction : Direction.values()) {
+            if (direction != skip) {
+                Point enemyNext = getNext(enemyPoint, direction);
+                if (enemyNext.type != PointType.WALL) {
+                    paths.add(direction);
+                }
+            }
+        }
+        return paths;
+    }
+
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -316,9 +345,9 @@ public class GameView extends View {
 
         }
 
-        float left = mPacMan.x;
+        float left = (float)mPacMan.x;
         float right = left + mBoxSize;
-        float top = mPacMan.y;
+        float top = (float) mPacMan.y;
         float bottom = top + mBoxSize;
         canvas.drawBitmap(mPacMan.getBitmap(), null, new RectF(left, top, right, bottom), mPaint);
 
