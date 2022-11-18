@@ -67,6 +67,18 @@ public class EndScreenActivity extends AppCompatActivity {
             text.setLayoutParams(layoutParams);
             layout.addView(text);
         }
+        TextView text = new TextView(getApplicationContext());
+        text.setId(View.generateViewId());
+        text.setTextSize(30);
+        text.setTextColor(Color.WHITE);
+        layoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        layoutParams.gravity = Gravity.CENTER_HORIZONTAL;
+        layoutParams.setMargins(0, 60, 0, 0);
+        text.setLayoutParams(layoutParams);
+        text.setText(String.format("Your score: %d", score));
+        layout.addView(text);
     }
 
     public void loadScores(String name, int score) {

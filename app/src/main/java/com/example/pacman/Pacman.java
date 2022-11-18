@@ -8,21 +8,19 @@ import android.widget.ImageView;
 
 public class Pacman {
     private Direction direction;
-    private Point location;
-    private Point spawnPoint;
     private boolean superState;
     private GameView view;
-
-    public int score;
-    public int superTimer;
-
-    public int lives;
-    public int invincibilityTimer;
-    public float x = 0;
-    public float y = 0;
+    private float spawn_x = 0;
+    private float spawn_y = 0;
     private float vel;
     private Bitmap sprite;
     private int boxSize;
+
+    public int score;
+    public int superTimer;
+    public int lives;
+    public float x = 0;
+    public float y = 0;
     public Pacman(GameView view, Bitmap sprite) {
         this.score = 0;
         this.direction = Direction.RIGHT;
@@ -31,21 +29,22 @@ public class Pacman {
         superTimer = 0;
         this.view = view;
         this.sprite = sprite;
-        invincibilityTimer = 0;
     }
 
-    public void setPoint(Point point) {
-        location = point;
-    }
     public void setLocation(int x, int y) {
         this.x = x;
         this.y = y;
     }
-    public void setSpawnPoint(Point point) {
-        spawnPoint = point;
+
+    public void setSpawnPoint(int x, int y) {
+        spawn_x = x;
+        spawn_y = y;
     }
-    public Point getPoint() {
-        return location;
+
+    public void respawn() {
+        x = spawn_x;
+        y = spawn_y;
+        this.direction = Direction.RIGHT;
     }
 
     public void setSuper(boolean bool) {
@@ -53,14 +52,6 @@ public class Pacman {
     }
     public boolean getSuper() {
         return superState;
-    }
-
-    public void setDirection(Direction dir) {
-        this.direction = dir;
-    }
-
-    public Direction getDirection() {
-        return direction;
     }
 
     public Bitmap getBitmap() {
@@ -136,7 +127,7 @@ public class Pacman {
                 case POWER_PELLET:
                     //Add Points + Super
                     score += 100;
-                    superState = true;
+                    //superState = true;
                     superTimer = 20;
                     currentBlock.type = PointType.EMPTY;
                     break;
@@ -159,8 +150,13 @@ public class Pacman {
                 float e_x = view.enemies[i].x;
                 float e_y = view.enemies[i].y;
                 if (collide(x, y, e_x, e_y)) {
-                    //lives = 0;
-                    break;
+                    if (!superState) {
+                        lives--;
+                        if (lives > 0) {
+                            view.resetMap();
+                        }
+                        break;
+                    }
                 }
             }
         }

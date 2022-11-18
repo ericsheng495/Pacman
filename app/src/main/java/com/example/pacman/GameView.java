@@ -63,7 +63,7 @@ public class GameView extends View {
     //Sizing
     public static int mBoxSize;
     private int mBoxPadding;
-    private int spawnTimer = 10;
+    public int spawnTimer = 10;
     private Paint mPaint = new Paint();
 
     //private Handler mHandler;
@@ -121,10 +121,29 @@ public class GameView extends View {
         }
         Log.d("Box size: ", "" + mBoxSize);
         mPacMan.setLocation(mBoxSize * 9, mBoxSize * 14);
+        mPacMan.setSpawnPoint(mBoxSize * 9, mBoxSize * 14);
         mMagenta.setLocation(mBoxSize * 8, mBoxSize * 7);
         mGreen.setLocation(mBoxSize * 8, mBoxSize * 7);
         mYellow.setLocation(mBoxSize * 8, mBoxSize * 7);
         mRed.setLocation(mBoxSize * 8, mBoxSize * 7);
+    }
+
+    public void resetMap() {
+        mPacMan.respawn();
+        mGreen.setVisible(false);
+        mRed.setVisible(false);
+        mMagenta.setVisible(false);
+        mYellow.setVisible(false);
+        mMagenta.setLocation(mBoxSize * 8, mBoxSize * 7);
+        mGreen.setLocation(mBoxSize * 8, mBoxSize * 7);
+        mYellow.setLocation(mBoxSize * 8, mBoxSize * 7);
+        mRed.setLocation(mBoxSize * 8, mBoxSize * 7);
+        enemyQueue.clear();
+        enemyQueue.add(PointType.ENEMYMAG);
+        enemyQueue.add(PointType.ENEMYGREEN);
+        enemyQueue.add(PointType.ENEMYYELLOW);
+        enemyQueue.add(PointType.ENEMYRED);
+
     }
 
     public Point getPoint(int x, int y) {
@@ -136,7 +155,7 @@ public class GameView extends View {
 
             spawnTimer = 60;
             Point point = getPoint(j, i);
-            if (point.type == PointType.EMPTY) {
+            if (mPacMan.x != i * 1f * mBoxSize && mPacMan.y != i * mBoxSize * 1f) {
                 PointType enemy = enemyQueue.remove();
                 Log.d("Spawning Enemy", "" + enemy);
                 switch (enemy) {
@@ -168,48 +187,6 @@ public class GameView extends View {
             mGameWin = true;
         }
     }
-
-    /*public void enemyNext(Enemy enemy) {
-        Point enemyFirst = enemy.getPoint();
-        Direction nextEnemyDir = enemy.getNext_direction();
-        Point enemyNext = getNext(enemyFirst, nextEnemyDir);
-
-        if (nextEnemyDir != enemy.getDirection() && enemyNext.type != PointType.WALL) {
-            //refactor
-            enemy.setDirection(nextEnemyDir);
-        }
-        enemyNext = getNext(enemyFirst, enemy.getDirection());
-        if (enemyNext.type == PointType.PELLET) {
-            //landedOnPellet = 1;
-            enemy.setLandedOnPellet(1);
-            enemyNext.type = enemy.getEnemyType();
-            enemyFirst.type = PointType.EMPTY;
-            enemy.setPoint(enemyNext);
-        } else if (enemyNext.type == PointType.POWER_PELLET) {
-            //landedOnPellet = 2;
-            enemy.setLandedOnPellet(2);
-            enemyNext.type = enemy.getEnemyType();
-            enemyFirst.type = PointType.EMPTY;
-            enemy.setPoint(enemyNext);
-        } else {
-            if (enemyNext.type != PointType.WALL) {
-                enemyNext.type = enemy.getEnemyType();
-                if (enemy.getLandedOnPellet() == 1) {
-                    enemyFirst.type = PointType.PELLET;
-                    //landedOnPellet = 0;
-                    enemy.setLandedOnPellet(0);
-                } else if (enemy.getLandedOnPellet() == 2) {
-                    enemyFirst.type = PointType.POWER_PELLET;
-                    //landedOnPellet = 0;
-                    enemy.setLandedOnPellet(0);
-                } else {
-                    enemyFirst.type = PointType.EMPTY;
-                }
-                enemy.setPoint(enemyNext);
-            }
-        }
-
-    }*/
 
     public void enemyNext() {
         //enemyNext(mGreen);
@@ -302,7 +279,7 @@ public class GameView extends View {
         mPaint.setStyle(Paint.Style.FILL);
         mPaint.setColor(Color.BLACK);
         canvas.drawPaint(mPaint);
-        float ssize = mBoxSize * .5f;
+        float ssize = mBoxSize * .4f;
         for (int y = 0; y < MAP_SIZE; y++) {
             for (int x = 0; x < MAP_SIZE; x++) {
                 Point cur = getPoint(x, y);
@@ -319,7 +296,8 @@ public class GameView extends View {
                     case POWER_PELLET:
                         mPaint.setStyle(Paint.Style.FILL);
                         mPaint.setColor(Color.parseColor("#FC9D03"));
-                        canvas.drawRect(left, top, right, bottom, mPaint);
+                        //canvas.drawOval(left, top, right, bottom, mPaint);
+                        canvas.drawCircle(left + mBoxSize/2f, top + mBoxSize/2f, mBoxSize/3f, mPaint);
                         break;
                     case WALL:
                         mPaint.setStyle(Paint.Style.STROKE);
@@ -329,25 +307,6 @@ public class GameView extends View {
                         break;
 
                 }
-                /*switch (getPoint(x, y).type) {
-                    case PELLET:
-                        mPaint.setColor(Color.WHITE);
-                        break;
-                    case POWER_PELLET:
-                        mPaint.setColor(Color.parseColor("#FC9D03"));//orange
-                        break;
-                    case EMPTY:
-                        mPaint.setColor(Color.BLACK);
-                        break;
-                    case WALL:
-                        mPaint.setColor(Color.BLUE);
-                        break;
-                }
-                int left = mBoxSize * x;
-                int right = left + mBoxSize;
-                int top = mBoxSize * y;
-                int bottom = top + mBoxSize;
-                canvas.drawRect(left, top, right, bottom, mPaint);*/
             }
 
         }
