@@ -152,7 +152,6 @@ public class GameView extends View {
 
     public void spawnGhost(int i, int j) {
         if (!enemyQueue.isEmpty() && spawnTimer <= 0) {
-
             spawnTimer = 60;
             Point point = getPoint(j, i);
             if (mPacMan.x != i * 1f * mBoxSize && mPacMan.y != i * mBoxSize * 1f) {
@@ -175,6 +174,7 @@ public class GameView extends View {
             }
         }
         spawnTimer--;
+        Log.d("Spawn Timer: ", "" + spawnTimer);
     }
 
     public void next(Direction inputDirection) {
@@ -305,7 +305,6 @@ public class GameView extends View {
                         mPaint.setColor(Color.BLUE);
                         canvas.drawRect(left, top, right, bottom, mPaint);
                         break;
-
                 }
             }
 
