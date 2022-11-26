@@ -58,7 +58,7 @@ public class GameView extends View {
 
     private boolean mGameWin = false;
     //private PriorityQueue<Point> pelletQueue;
-    private LinkedList<PointType> enemyQueue;
+    public LinkedList<PointType> enemyQueue;
     public Enemy[] enemies;
     //Sizing
     public static int mBoxSize;
