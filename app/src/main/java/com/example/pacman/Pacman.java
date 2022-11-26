@@ -24,8 +24,10 @@ public class Pacman {
     public Pacman(GameView view, Bitmap sprite) {
         this.score = 0;
         this.direction = Direction.RIGHT;
+        //RESET TO FALSE
         this.superState = true;
         this.lives = 3;
+        //RESET TO 0
         superTimer = 1000000;
         this.view = view;
         this.sprite = sprite;
@@ -160,6 +162,7 @@ public class Pacman {
                         view.enemies[i].setVisible(false);
                         view.enemyQueue.addLast(view.enemies[i].getEnemyType());
                         view.enemies[i].setLocation(view.mBoxSize * 8, view.mBoxSize * 7);
+                        score += 100;
                     }
                 }
             }
