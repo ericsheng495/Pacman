@@ -116,6 +116,11 @@ public class GameView extends View {
                         point.type = PointType.POWER_PELLET;
                         pelletCount++;
                         break;
+                    case 4:
+                        point.type = PointType.INVINCIBLE_PELLE;
+                        pelletCount++;
+                        break;
+
                 }
             }
         }
@@ -296,6 +301,12 @@ public class GameView extends View {
                     case POWER_PELLET:
                         mPaint.setStyle(Paint.Style.FILL);
                         mPaint.setColor(Color.parseColor("#FC9D03"));
+                        //canvas.drawOval(left, top, right, bottom, mPaint);
+                        canvas.drawCircle(left + mBoxSize/2f, top + mBoxSize/2f, mBoxSize/3f, mPaint);
+                        break;
+                    case INVINCIBLE_PELLE:
+                        mPaint.setStyle(Paint.Style.FILL);
+                        mPaint.setColor(Color.parseColor("#FF0000"));
                         //canvas.drawOval(left, top, right, bottom, mPaint);
                         canvas.drawCircle(left + mBoxSize/2f, top + mBoxSize/2f, mBoxSize/3f, mPaint);
                         break;
