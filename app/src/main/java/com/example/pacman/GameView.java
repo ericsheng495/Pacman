@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.Random;
+
 import android.os.Handler;
 import android.widget.TextView;
 
@@ -31,9 +32,11 @@ public class GameView extends View {
     public GameView(Context context) {
         super(context);
     }
+
     public GameView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
+
     public GameView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
@@ -53,7 +56,7 @@ public class GameView extends View {
     //Enemies
     private GreenGhost mGreen = new GreenGhost(this);
     private MagentaGhost mMagenta = new MagentaGhost(this);
-    private RedGhost mRed= new RedGhost(this);
+    private RedGhost mRed = new RedGhost(this);
     private YellowGhost mYellow = new YellowGhost(this);
 
     private boolean mGameWin = false;
@@ -87,6 +90,7 @@ public class GameView extends View {
         enemies = new Enemy[]{mMagenta, mRed, mGreen, mYellow};
         initMap();
     }
+
     private void initMap() {
         for (int i = 0; i < MAP_SIZE; i++) {
             for (int j = 0; j < MAP_SIZE; j++) {
@@ -148,6 +152,23 @@ public class GameView extends View {
         enemyQueue.add(PointType.ENEMYGREEN);
         enemyQueue.add(PointType.ENEMYYELLOW);
         enemyQueue.add(PointType.ENEMYRED);
+
+    }
+
+    public void resetGhost(Enemy eatenGhost) {
+        if (eatenGhost == mGreen) {
+            mGreen.setVisible(false);
+            mGreen.setLocation(mBoxSize * 8, mBoxSize * 7);
+        } else if (eatenGhost == mRed) {
+            mRed.setVisible(false);
+            mRed.setLocation(mBoxSize * 8, mBoxSize * 7);
+        } else if (eatenGhost == mMagenta) {
+            mMagenta.setVisible(false);
+            mMagenta.setLocation(mBoxSize * 8, mBoxSize * 7);
+        } else if (eatenGhost == mYellow) {
+            mYellow.setVisible(false);
+            mYellow.setLocation(mBoxSize * 8, mBoxSize * 7);
+        }
 
     }
 
@@ -236,19 +257,19 @@ public class GameView extends View {
         return mGameWin;
     }
 
-    public ArrayList<Direction> getEnemyPath(Point enemyPoint){
+    public ArrayList<Direction> getEnemyPath(Point enemyPoint) {
         ArrayList<Direction> paths = new ArrayList<>();
 
         for (Direction direction : Direction.values()) {
             Point enemyNext = getNext(enemyPoint, direction);
-            if(enemyNext.type != PointType.WALL){
+            if (enemyNext.type != PointType.WALL) {
                 paths.add(direction);
             }
         }
         return paths;
     }
 
-    public ArrayList<Direction> getEnemyPath(Point enemyPoint, Direction dir){
+    public ArrayList<Direction> getEnemyPath(Point enemyPoint, Direction dir) {
         ArrayList<Direction> paths = new ArrayList<>();
         Direction skip = Direction.DOWN;
         switch (dir) {
@@ -292,27 +313,27 @@ public class GameView extends View {
                 int right = left + mBoxSize;
                 int top = mBoxSize * y;
                 int bottom = top + mBoxSize;
-                switch(getPoint(x,y).type) {
+                switch (getPoint(x, y).type) {
                     case PELLET:
                         mPaint.setStyle(Paint.Style.FILL);
                         mPaint.setColor(Color.WHITE);
-                        canvas.drawRect(left + (mBoxSize/2f - ssize/2), top + (mBoxSize/2f - ssize/2), left + (mBoxSize/2f + ssize/2), top + (mBoxSize/2f + ssize/2), mPaint);
+                        canvas.drawRect(left + (mBoxSize / 2f - ssize / 2), top + (mBoxSize / 2f - ssize / 2), left + (mBoxSize / 2f + ssize / 2), top + (mBoxSize / 2f + ssize / 2), mPaint);
                         break;
                     case POWER_PELLET:
                         mPaint.setStyle(Paint.Style.FILL);
                         mPaint.setColor(Color.parseColor("#FC9D03"));
                         //canvas.drawOval(left, top, right, bottom, mPaint);
-                        canvas.drawCircle(left + mBoxSize/2f, top + mBoxSize/2f, mBoxSize/3f, mPaint);
+                        canvas.drawCircle(left + mBoxSize / 2f, top + mBoxSize / 2f, mBoxSize / 3f, mPaint);
                         break;
                     case INVINCIBLE_PELLET:
                         mPaint.setStyle(Paint.Style.FILL);
                         mPaint.setColor(Color.parseColor("#FF0000"));
                         //canvas.drawOval(left, top, right, bottom, mPaint);
-                        canvas.drawCircle(left + mBoxSize/2f, top + mBoxSize/2f, mBoxSize/3f, mPaint);
+                        canvas.drawCircle(left + mBoxSize / 2f, top + mBoxSize / 2f, mBoxSize / 3f, mPaint);
                         break;
                     case WALL:
                         mPaint.setStyle(Paint.Style.STROKE);
-                        mPaint.setStrokeWidth( 10f );
+                        mPaint.setStrokeWidth(10f);
                         mPaint.setColor(Color.BLUE);
                         canvas.drawRect(left, top, right, bottom, mPaint);
                         break;
@@ -322,7 +343,7 @@ public class GameView extends View {
 
         }
 
-        float left = (float)mPacMan.x;
+        float left = (float) mPacMan.x;
         float right = left + mBoxSize;
         float top = (float) mPacMan.y;
         float bottom = top + mBoxSize;

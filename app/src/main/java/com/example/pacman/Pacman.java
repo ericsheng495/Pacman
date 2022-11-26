@@ -17,10 +17,13 @@ public class Pacman {
     private int boxSize;
 
     public int score;
+    public boolean hasInvinciblePellet;
     public int superTimer;
     public int lives;
     public float x = 0;
     public float y = 0;
+
+
     public Pacman(GameView view, Bitmap sprite) {
         this.score = 0;
         this.direction = Direction.RIGHT;
@@ -50,6 +53,7 @@ public class Pacman {
     public void setSuper(boolean bool) {
         superState = bool;
     }
+
     public boolean getSuper() {
         return superState;
     }
@@ -60,7 +64,7 @@ public class Pacman {
 
     public void setBoxSize(int boxSize) {
         this.boxSize = boxSize;
-        this.vel = boxSize/8.0f;
+        this.vel = boxSize / 8.0f;
         Log.d("Pacman speed: ", "" + vel);
     }
 
@@ -68,8 +72,8 @@ public class Pacman {
         //https://stackoverflow.com/a/31035335/19170967
         float x2 = x1 + boxSize;
         float y2 = y1 + boxSize;
-        float e_x2 = e_x1 + boxSize/1.5f;
-        float e_y2 = e_y1 + boxSize/1.5f;
+        float e_x2 = e_x1 + boxSize / 1.5f;
+        float e_y2 = e_y1 + boxSize / 1.5f;
         return (x1 < e_x2 && x2 > e_x1 &&
                 y1 < e_y2 && y2 > e_y1);
     }
@@ -79,7 +83,7 @@ public class Pacman {
         for (int i = 1; i < scale; i++)
             pow *= 10;
         float tmp = number * pow;
-        return ( (float) ( (int) ((tmp - (int) tmp) >= 0.5f ? tmp + 1 : tmp) ) ) / pow;
+        return ((float) ((int) ((tmp - (int) tmp) >= 0.5f ? tmp + 1 : tmp))) / pow;
     }
 
     private void move() {
@@ -115,8 +119,8 @@ public class Pacman {
         //Log.d("Pacman.xy: ", x + ", " + y);
         //Log.d("Collision check", "" + x%boxSize + "," + y%boxSize + "\n");
         //Log.d("Check for wall collision: ", "" + (x%boxSize == 0 && y%boxSize == 0));
-        if (x%boxSize == 0 && y%boxSize == 0) { //check for wall and pellet
-            Point currentBlock = view.getPoint((int)x/boxSize, (int)y/boxSize);
+        if (x % boxSize == 0 && y % boxSize == 0) { //check for wall and pellet
+            Point currentBlock = view.getPoint((int) x / boxSize, (int) y / boxSize);
             switch (currentBlock.type) {
                 case PELLET:
                     //Add Points
@@ -133,9 +137,9 @@ public class Pacman {
                     break;
                 case INVINCIBLE_PELLET:
                     //Add Points + Super
-                    score += 300;
                     //superState = true;
-                    superTimer = 20;
+                    superTimer = 40000000;
+                    hasInvinciblePellet = true;
                     currentBlock.type = PointType.EMPTY;
                     break;
             }
@@ -158,10 +162,16 @@ public class Pacman {
                 float e_y = view.enemies[i].y;
                 if (collide(x, y, e_x, e_y)) {
                     if (!superState) {
-                        lives--;
-                        if (lives > 0) {
-                            view.resetMap();
+                        if (hasInvinciblePellet) {
+                            score += 1;
+//                            view.resetGhost();
+                        } else {
+                            lives--;
+                            if (lives > 0) {
+                                view.resetMap();
+                            }
                         }
+
                         break;
                     }
                 }
