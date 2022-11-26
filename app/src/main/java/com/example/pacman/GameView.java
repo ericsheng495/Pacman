@@ -117,7 +117,7 @@ public class GameView extends View {
                         pelletCount++;
                         break;
                     case 4:
-                        point.type = PointType.INVINCIBLE_PELLE;
+                        point.type = PointType.INVINCIBLE_PELLET;
                         pelletCount++;
                         break;
 
@@ -304,7 +304,7 @@ public class GameView extends View {
                         //canvas.drawOval(left, top, right, bottom, mPaint);
                         canvas.drawCircle(left + mBoxSize/2f, top + mBoxSize/2f, mBoxSize/3f, mPaint);
                         break;
-                    case INVINCIBLE_PELLE:
+                    case INVINCIBLE_PELLET:
                         mPaint.setStyle(Paint.Style.FILL);
                         mPaint.setColor(Color.parseColor("#FF0000"));
                         //canvas.drawOval(left, top, right, bottom, mPaint);

@@ -131,6 +131,13 @@ public class Pacman {
                     superTimer = 20;
                     currentBlock.type = PointType.EMPTY;
                     break;
+                case INVINCIBLE_PELLET:
+                    //Add Points + Super
+                    score += 300;
+                    //superState = true;
+                    superTimer = 20;
+                    currentBlock.type = PointType.EMPTY;
+                    break;
             }
             Point nextBlock = view.getNext(currentBlock, nextDirection);
             if (nextDirection != direction && nextBlock.type != PointType.WALL) {
