@@ -8,31 +8,35 @@ import android.widget.ImageView;
 
 public class Pacman {
     private Direction direction;
-    private boolean superState;
+    private boolean doubleSpeedState, doubleScoreState, superState;
     private GameView view;
     private float spawn_x = 0;
     private float spawn_y = 0;
     private float vel;
     private Bitmap sprite;
     private int boxSize;
-
+    private int scoreMultiplier;
     public int score;
-    public int superTimer;
+    public int superSpeedTimer, superScoreTimer, superTimer;
     public int lives;
     public float x = 0;
     public float y = 0;
 
 
     public Pacman(GameView view, Bitmap sprite) {
-        this.score = 0;
-        this.direction = Direction.RIGHT;
         //RESET TO FALSE
         this.superState = false;
-        this.lives = 3;
         //RESET TO 0
-        superTimer = 0;
+        this.superTimer = 0;
+        this.score = 0;
+        this.direction = Direction.RIGHT;
+        this.doubleSpeedState = false;
+        this.lives = 3;
+        this.superSpeedTimer = 0;
+        this.superScoreTimer = 0;
         this.view = view;
         this.sprite = sprite;
+        this.scoreMultiplier = 1;
     }
 
     public void setLocation(int x, int y) {
@@ -116,7 +120,21 @@ public class Pacman {
             superTimer = 0;
             superState = false;
         }
+        if (superSpeedTimer > 0) {
+            superSpeedTimer--;
+        } else {
+            superSpeedTimer = 0;
+            if (doubleSpeedState) vel /= 2;
+            doubleSpeedState = false;
+        }
 
+        if (superScoreTimer > 0) {
+            superScoreTimer--;
+        } else {
+            superScoreTimer = 0;
+            if (doubleScoreState) scoreMultiplier = 1;
+            doubleScoreState = false;
+        }
         //Log.d("Pacman.grid_xy: ", x/boxSize + ", " + y/boxSize);
         //Log.d("Pacman.xy: ", x + ", " + y);
         //Log.d("Collision check", "" + x%boxSize + "," + y%boxSize + "\n");
@@ -130,11 +148,21 @@ public class Pacman {
                     //lives = 0; //debug
                     currentBlock.type = PointType.EMPTY;
                     break;
-                case POWER_PELLET:
+                case DOUBLE_PELLET:
                     //Add Points + Super
-                    score += 100;
-                    superState = true;
-                    superTimer = 250;
+                    score += (100 * this.scoreMultiplier);
+                    //superState = true;
+                    if (!doubleScoreState) this.scoreMultiplier = 2;
+                    doubleScoreState = true;
+                    superScoreTimer = 100;
+                    currentBlock.type = PointType.EMPTY;
+                    break;
+                case SPEED_PELLET:
+                    //Add Points + Super
+                    score += (100 * this.scoreMultiplier);
+                    superSpeedTimer = 100;
+                    if (!doubleSpeedState) this.vel *= 2;
+                    doubleSpeedState = true;
                     currentBlock.type = PointType.EMPTY;
                     break;
                 case INVINCIBLE_PELLET:
