@@ -159,10 +159,12 @@ public class Pacman {
                         }
                         break;
                     } else {
+                        if (view.enemyQueue.isEmpty()) {
+                            view.spawnTimer = 120;
+                        }
                         view.enemies[i].setVisible(false);
                         view.enemyQueue.addLast(view.enemies[i].getEnemyType());
                         view.enemies[i].setLocation(view.mBoxSize * 8, view.mBoxSize * 7);
-                        view.spawnTimer = 120;
                         score += 100;
                     }
                 }

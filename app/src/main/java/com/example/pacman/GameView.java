@@ -152,6 +152,7 @@ public class GameView extends View {
 
     public void spawnGhost(int i, int j) {
         if (!enemyQueue.isEmpty() && spawnTimer <= 0) {
+            Log.d("QUEUE", "" + enemyQueue.getFirst());
             spawnTimer = 60;
             Point point = getPoint(j, i);
             if (mPacMan.x != i * 1f * mBoxSize && mPacMan.y != i * mBoxSize * 1f) {
@@ -174,6 +175,7 @@ public class GameView extends View {
             }
         }
         spawnTimer--;
+
         Log.d("Spawn Timer: ", "" + spawnTimer);
     }
 
