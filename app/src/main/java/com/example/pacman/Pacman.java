@@ -144,7 +144,7 @@ public class Pacman {
             switch (currentBlock.type) {
                 case PELLET:
                     //Add Points
-                    score += 50;
+                    score += (50 * this.scoreMultiplier);
                     //lives = 0; //debug
                     currentBlock.type = PointType.EMPTY;
                     break;
@@ -154,19 +154,20 @@ public class Pacman {
                     //superState = true;
                     if (!doubleScoreState) this.scoreMultiplier = 2;
                     doubleScoreState = true;
-                    superScoreTimer = 100;
+                    superScoreTimer = 250;
                     currentBlock.type = PointType.EMPTY;
                     break;
                 case SPEED_PELLET:
                     //Add Points + Super
                     score += (100 * this.scoreMultiplier);
-                    superSpeedTimer = 100;
+                    superSpeedTimer = 250;
                     if (!doubleSpeedState) this.vel *= 2;
                     doubleSpeedState = true;
                     currentBlock.type = PointType.EMPTY;
                     break;
                 case INVINCIBLE_PELLET:
                     //Add Points + Super
+                    score += (100 * this.scoreMultiplier);
                     superState = true;
                     superTimer = 250;
                     currentBlock.type = PointType.EMPTY;
