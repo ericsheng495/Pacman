@@ -117,10 +117,14 @@ public class GameView extends View {
                         pelletCount++;
                         break;
                     case 3:
-                        point.type = PointType.POWER_PELLET;
+                        point.type = PointType.DOUBLE_PELLET;
                         pelletCount++;
                         break;
                     case 4:
+                        point.type = PointType.SPEED_PELLET;
+                        pelletCount++;
+                        break;
+                    case 5:
                         point.type = PointType.INVINCIBLE_PELLET;
                         pelletCount++;
                         break;
@@ -305,11 +309,17 @@ public class GameView extends View {
                         mPaint.setColor(Color.WHITE);
                         canvas.drawRect(left + (mBoxSize / 2f - ssize / 2), top + (mBoxSize / 2f - ssize / 2), left + (mBoxSize / 2f + ssize / 2), top + (mBoxSize / 2f + ssize / 2), mPaint);
                         break;
-                    case POWER_PELLET:
+                    case DOUBLE_PELLET:
                         mPaint.setStyle(Paint.Style.FILL);
                         mPaint.setColor(Color.parseColor("#FC9D03"));
                         //canvas.drawOval(left, top, right, bottom, mPaint);
-                        canvas.drawCircle(left + mBoxSize / 2f, top + mBoxSize / 2f, mBoxSize / 3f, mPaint);
+                        canvas.drawCircle(left + mBoxSize/2f, top + mBoxSize/2f, mBoxSize/3f, mPaint);
+                        break;
+                    case SPEED_PELLET:
+                        mPaint.setStyle(Paint.Style.FILL);
+                        mPaint.setColor(Color.parseColor("#40E0D0"));
+                        //canvas.drawOval(left, top, right, bottom, mPaint);
+                        canvas.drawCircle(left + mBoxSize/2f, top + mBoxSize/2f, mBoxSize/3f, mPaint);
                         break;
                     case INVINCIBLE_PELLET:
                         mPaint.setStyle(Paint.Style.FILL);
