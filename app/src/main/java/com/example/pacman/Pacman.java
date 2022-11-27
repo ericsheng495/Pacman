@@ -17,7 +17,6 @@ public class Pacman {
     private int boxSize;
 
     public int score;
-    public boolean hasInvinciblePellet;
     public int superTimer;
     public int lives;
     public float x = 0;
@@ -141,7 +140,6 @@ public class Pacman {
                     //Add Points + Super
                     superState = true;
                     superTimer = 40000000;
-                    hasInvinciblePellet = true;
                     currentBlock.type = PointType.EMPTY;
                     break;
             }
@@ -164,15 +162,10 @@ public class Pacman {
                 float e_y = view.enemies[i].y;
                 if (collide(x, y, e_x, e_y)) {
                     if (!superState) {
-                        if (hasInvinciblePellet) {
-                            score += 1;
-                        } else {
-                            lives--;
-                            if (lives > 0) {
-                                view.resetMap();
-                            }
+                        lives--;
+                        if (lives > 0) {
+                            view.resetMap();
                         }
-
                         break;
                     } else {
                         if (view.enemyQueue.isEmpty()) {
