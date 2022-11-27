@@ -137,7 +137,7 @@ public class Pacman {
                     break;
                 case INVINCIBLE_PELLET:
                     //Add Points + Super
-                    //superState = true;
+                    superState = true;
                     superTimer = 40000000;
                     hasInvinciblePellet = true;
                     currentBlock.type = PointType.EMPTY;
@@ -164,7 +164,6 @@ public class Pacman {
                     if (!superState) {
                         if (hasInvinciblePellet) {
                             score += 1;
-//                            view.resetGhost();
                         } else {
                             lives--;
                             if (lives > 0) {

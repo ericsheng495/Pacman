@@ -155,22 +155,6 @@ public class GameView extends View {
 
     }
 
-    public void resetGhost(Enemy eatenGhost) {
-        if (eatenGhost == mGreen) {
-            mGreen.setVisible(false);
-            mGreen.setLocation(mBoxSize * 8, mBoxSize * 7);
-        } else if (eatenGhost == mRed) {
-            mRed.setVisible(false);
-            mRed.setLocation(mBoxSize * 8, mBoxSize * 7);
-        } else if (eatenGhost == mMagenta) {
-            mMagenta.setVisible(false);
-            mMagenta.setLocation(mBoxSize * 8, mBoxSize * 7);
-        } else if (eatenGhost == mYellow) {
-            mYellow.setVisible(false);
-            mYellow.setLocation(mBoxSize * 8, mBoxSize * 7);
-        }
-
-    }
 
     public Point getPoint(int x, int y) {
         return mPoints[y][x];
