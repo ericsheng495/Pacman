@@ -27,10 +27,10 @@ public class Pacman {
         this.score = 0;
         this.direction = Direction.RIGHT;
         //RESET TO FALSE
-        this.superState = true;
+        this.superState = false;
         this.lives = 3;
         //RESET TO 0
-        superTimer = 1000000;
+        superTimer = 0;
         this.view = view;
         this.sprite = sprite;
     }
@@ -109,6 +109,7 @@ public class Pacman {
     }
 
     public void next(Direction nextDirection) {
+        Log.d("Super", "" + superTimer);
         if (superTimer > 0) {
             superTimer--;
         } else {
@@ -132,14 +133,14 @@ public class Pacman {
                 case POWER_PELLET:
                     //Add Points + Super
                     score += 100;
-                    //superState = true;
-                    superTimer = 20;
+                    superState = true;
+                    superTimer = 250;
                     currentBlock.type = PointType.EMPTY;
                     break;
                 case INVINCIBLE_PELLET:
                     //Add Points + Super
                     superState = true;
-                    superTimer = 40000000;
+                    superTimer = 250;
                     currentBlock.type = PointType.EMPTY;
                     break;
             }
