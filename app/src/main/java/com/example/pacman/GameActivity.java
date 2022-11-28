@@ -162,6 +162,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                     Intent intent = new Intent(getApplicationContext(), EndScreenActivity.class);
                     intent.putExtra("Name", name);
                     intent.putExtra("Score", pacman.score);
+                    intent.putExtra("EnemiesKilled", pacman.getEnemiesKilled());
                     intent.putExtra("Win", mGameView.isGameWin());
                     startActivity(intent);
                 });

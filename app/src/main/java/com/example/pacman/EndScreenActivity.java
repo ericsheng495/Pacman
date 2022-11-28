@@ -28,6 +28,8 @@ public class EndScreenActivity extends AppCompatActivity {
     int score;
     String[] scores = new String[11];
     int scoreNum = 0;
+    int enemiesKilled;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +37,7 @@ public class EndScreenActivity extends AppCompatActivity {
         Intent prev_intent = getIntent();
         name = prev_intent.getStringExtra("Name");
         score = prev_intent.getIntExtra("Score", 0);
+        enemiesKilled = prev_intent.getIntExtra("EnemiesKilled", 0);
         findViewById(R.id.restartButton).setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), ConfigScreen.class);
             startActivity(intent);
@@ -72,7 +75,7 @@ public class EndScreenActivity extends AppCompatActivity {
         }
         TextView text = new TextView(getApplicationContext());
         text.setId(View.generateViewId());
-        text.setTextSize(30);
+        text.setTextSize(20);
         text.setTextColor(Color.WHITE);
         layoutParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -82,6 +85,20 @@ public class EndScreenActivity extends AppCompatActivity {
         text.setLayoutParams(layoutParams);
         text.setText(String.format("Your score: %d", score));
         layout.addView(text);
+
+        //Enemies
+        TextView textEnemies = new TextView(getApplicationContext());
+        textEnemies.setId(View.generateViewId());
+        textEnemies.setTextSize(20);
+        textEnemies.setTextColor(Color.WHITE);
+        layoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        layoutParams.gravity = Gravity.CENTER_HORIZONTAL;
+        layoutParams.setMargins(0, 60, 0, 0);
+        textEnemies.setLayoutParams(layoutParams);
+        textEnemies.setText(String.format("Enemies killed: %d", enemiesKilled));
+        layout.addView(textEnemies);
 
         TextView textWin = new TextView(getApplicationContext());
         textWin.setId(View.generateViewId());

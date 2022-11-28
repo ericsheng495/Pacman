@@ -22,6 +22,7 @@ public class Pacman {
     public int lives;
     public float x = 0;
     public float y = 0;
+    private int enemiesKilled = 0;
 
 
     public Pacman(GameView view, Bitmap sprite) {
@@ -32,7 +33,7 @@ public class Pacman {
         this.score = 0;
         this.direction = Direction.RIGHT;
         this.doubleSpeedState = false;
-        this.lives = 3;
+        this.lives = 1;
         this.superSpeedTimer = 0;
         this.superScoreTimer = 0;
         this.view = view;
@@ -78,6 +79,10 @@ public class Pacman {
         Log.d("Pacman speed: ", "" + vel);
     }
 
+    public int getEnemiesKilled() {
+        return enemiesKilled;
+    }
+
     private boolean collide(float x1, float y1, float e_x1, float e_y1) {
         //https://stackoverflow.com/a/31035335/19170967
         float x2 = x1 + boxSize;
@@ -120,7 +125,7 @@ public class Pacman {
     }
 
     public void next(Direction nextDirection) {
-        Log.d("Super", "" + superTimer);
+        //Log.d("Super", "" + superTimer);
         if (superTimer > 0) {
             superTimer--;
         } else {
@@ -223,6 +228,8 @@ public class Pacman {
                         view.enemyQueue.addLast(view.enemies[i].getEnemyType());
                         view.enemies[i].setLocation(view.mBoxSize * 8, view.mBoxSize * 7);
                         score += 100;
+                        enemiesKilled++;
+                        Log.d("ENEMIES KILLED", "" + enemiesKilled);
                     }
                 }
             }
