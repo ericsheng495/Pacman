@@ -29,10 +29,11 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     Pacman pacman;
     Direction nextDirection = Direction.RIGHT;
     String name;
+    boolean threadStop = false;
     //GreenGhost greenGhost = new GreenGhost();
 
     Boolean gameStart = new Boolean(false);
-
+    static int volume;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +42,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         name = intent.getStringExtra("Name");
         int difficulty = intent.getIntExtra("Difficulty", 0);
         int sprite = intent.getIntExtra("sprite_path", R.drawable.sprite_pacman);
-
+        volume = getSharedPreferences("Settings", 0).getInt("volume", 5);
 
         findViewById(R.id.up_button).setOnClickListener(v ->
                 nextDirection = Direction.UP);
@@ -120,11 +121,13 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case (R.id.mainButton):
+            case (R.id.mainButton): {
                 //Switches back to MainActivity
+                threadStop = true;
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.putExtra("playIntro", true);
                 startActivity(intent);
-
+            }
                 break;
             case (10):
                 break;
@@ -140,7 +143,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         final int delay = 1000 / FPS;
         new Thread(() -> {
             int count = 0;
-            while (!mGameView.isGameOver() && !mGameView.isGameWin()) {
+            while (!threadStop && !mGameView.isGameOver() && !mGameView.isGameWin()) {
                 try {
                     Thread.sleep(delay);
                     if (count % SPEED == 0) {
@@ -154,12 +157,15 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                     e.printStackTrace();
                 }
             }
-            mHandler.post(() -> {
-                Intent intent = new Intent(getApplicationContext(), EndScreenActivity.class);
-                intent.putExtra("Name", name);
-                intent.putExtra("Score", pacman.score);
-                startActivity(intent);
-            });
+            if (!threadStop) {
+                mHandler.post(() -> {
+                    Intent intent = new Intent(getApplicationContext(), EndScreenActivity.class);
+                    intent.putExtra("Name", name);
+                    intent.putExtra("Score", pacman.score);
+                    intent.putExtra("Win", mGameView.isGameWin());
+                    startActivity(intent);
+                });
+            }
         }).start();
     }
 

@@ -2,6 +2,7 @@ package com.example.pacman;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.media.MediaPlayer;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -63,6 +64,10 @@ public class Pacman {
         return superState;
     }
 
+    public boolean getDouble() {
+        return doubleScoreState;
+    }
+
     public Bitmap getBitmap() {
         return sprite;
     }
@@ -77,8 +82,10 @@ public class Pacman {
         //https://stackoverflow.com/a/31035335/19170967
         float x2 = x1 + boxSize;
         float y2 = y1 + boxSize;
-        float e_x2 = e_x1 + boxSize / 1.5f;
-        float e_y2 = e_y1 + boxSize / 1.5f;
+
+        float e_x2 = e_x1 + boxSize/2f;
+        float e_y2 = e_y1 + boxSize/2f;
+
         return (x1 < e_x2 && x2 > e_x1 &&
                 y1 < e_y2 && y2 > e_y1);
     }
@@ -139,22 +146,28 @@ public class Pacman {
         //Log.d("Pacman.xy: ", x + ", " + y);
         //Log.d("Collision check", "" + x%boxSize + "," + y%boxSize + "\n");
         //Log.d("Check for wall collision: ", "" + (x%boxSize == 0 && y%boxSize == 0));
-        if (x % boxSize == 0 && y % boxSize == 0) { //check for wall and pellet
-            Point currentBlock = view.getPoint((int) x / boxSize, (int) y / boxSize);
+        if (nextDirection == view.opposite(direction)) {
+            direction = nextDirection;
+        }
+
+        if (x%boxSize == 0 && y%boxSize == 0) { //check for wall and pellet
+            Point currentBlock = view.getPoint((int)x/boxSize, (int)y/boxSize);
             switch (currentBlock.type) {
                 case PELLET:
                     //Add Points
                     score += (50 * this.scoreMultiplier);
                     //lives = 0; //debug
+                    view.pelletCount--;
+                    view.playSound(R.raw.pellet);
                     currentBlock.type = PointType.EMPTY;
                     break;
                 case DOUBLE_PELLET:
                     //Add Points + Super
                     score += (100 * this.scoreMultiplier);
-                    //superState = true;
                     if (!doubleScoreState) this.scoreMultiplier = 2;
                     doubleScoreState = true;
                     superScoreTimer = 250;
+                    view.pelletCount--;
                     currentBlock.type = PointType.EMPTY;
                     break;
                 case SPEED_PELLET:
@@ -163,6 +176,7 @@ public class Pacman {
                     superSpeedTimer = 250;
                     if (!doubleSpeedState) this.vel *= 2;
                     doubleSpeedState = true;
+                    view.pelletCount--;
                     currentBlock.type = PointType.EMPTY;
                     break;
                 case INVINCIBLE_PELLET:
@@ -170,13 +184,16 @@ public class Pacman {
                     score += (100 * this.scoreMultiplier);
                     superState = true;
                     superTimer = 250;
+                    view.pelletCount--;
                     currentBlock.type = PointType.EMPTY;
                     break;
             }
+
             Point nextBlock = view.getNext(currentBlock, nextDirection);
             if (nextDirection != direction && nextBlock.type != PointType.WALL) {
                 direction = nextDirection;
             }
+
             nextBlock = view.getNext(currentBlock, direction);
             if (nextBlock.type != PointType.WALL) {
                 move();
@@ -193,6 +210,7 @@ public class Pacman {
                 if (collide(x, y, e_x, e_y)) {
                     if (!superState) {
                         lives--;
+                        view.playSound(R.raw.lose);
                         if (lives > 0) {
                             view.resetMap();
                         }
@@ -209,51 +227,6 @@ public class Pacman {
                 }
             }
         }
-
-
-        /*Point pacmanFirst = location;
-        Point pacmanNext = view.getNext(pacmanFirst, nextDirection);
-
-
-
-
-        if (nextDirection != direction && pacmanNext.type != PointType.WALL) {
-            setDirection(nextDirection);
-        }
-
-        pacmanNext = view.getNext(pacmanFirst, direction);
-        switch (pacmanNext.type) {
-            case PELLET:
-                //Add Points
-                score += 50;
-                lives = 0; //debug
-                break;
-            case POWER_PELLET:
-                //Add Points + Super
-                score += 100;
-                superState = true;
-                superTimer = 20;
-                break;
-            case ENEMYRED:
-            case ENEMYGREEN:
-            case ENEMYMAG:
-                if (!superState) {
-                    lives--;
-                } else {
-                    score += 200;
-                    //view.enemyQueue.add(pacmanNext.type);
-                }
-                break;
-        }
-
-        if (pacmanNext.type != PointType.WALL) {
-            if (superState || (pacmanNext.type != PointType.ENEMYRED && pacmanNext.type != PointType.ENEMYMAG
-                    && pacmanNext.type != PointType.ENEMYGREEN)) {
-                pacmanNext.type = PointType.PACMAN;
-            }
-            pacmanFirst.type = PointType.EMPTY;
-            location = pacmanNext;
-        }*/
     }
 
 }

@@ -9,6 +9,8 @@ public abstract class Enemy {
     float y;
     float vel;
 
+    static Bitmap scareSprite;
+
     public void setDirection(Direction dir) {
         this.direction = dir;
     }
@@ -47,4 +49,7 @@ public abstract class Enemy {
         }
     }
 
+    public static void setScaredBitmap(Bitmap b) {
+        scareSprite = b;
+    }
 }

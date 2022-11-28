@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -39,6 +41,7 @@ public class EndScreenActivity extends AppCompatActivity {
         });
         findViewById(R.id.backToTitle).setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            intent.putExtra("playIntro", true);
             startActivity(intent);
         });
         loadScores(name, score);
@@ -61,7 +64,7 @@ public class EndScreenActivity extends AppCompatActivity {
                 text.setText(String.format("%-15s%" + highestScoreViewSize + "s", showScore[0], showScore[1]));
             }
             else text.setText(String.format("%-15s%s", "-----", "-----"));
-            //else text.setText("a;0");
+
             text.setTextSize(20);
             text.setTextColor(Color.WHITE);
             text.setLayoutParams(layoutParams);
@@ -79,6 +82,19 @@ public class EndScreenActivity extends AppCompatActivity {
         text.setLayoutParams(layoutParams);
         text.setText(String.format("Your score: %d", score));
         layout.addView(text);
+
+        TextView textWin = new TextView(getApplicationContext());
+        textWin.setId(View.generateViewId());
+        textWin.setTextSize(30);
+        textWin.setTextColor(Color.WHITE);
+        layoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        layoutParams.gravity = Gravity.CENTER_HORIZONTAL;
+        layoutParams.setMargins(0, 60, 0, 0);
+        textWin.setLayoutParams(layoutParams);
+        textWin.setText((prev_intent.getExtras().getBoolean("Win")) ? "You Win" : "You Lose");
+        layout.addView(textWin);
     }
 
     public void loadScores(String name, int score) {

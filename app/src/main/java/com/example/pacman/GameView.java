@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.media.MediaPlayer;
 import android.os.Message;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -52,7 +53,7 @@ public class GameView extends View {
     public int pelletCount = 0;
     private Direction mDir;
     private boolean mGameOver = false;
-
+    private static MediaPlayer player;
     //Enemies
     private GreenGhost mGreen = new GreenGhost(this);
     private MagentaGhost mMagenta = new MagentaGhost(this);
@@ -82,6 +83,7 @@ public class GameView extends View {
         enemyQueue.add(PointType.ENEMYGREEN);
         enemyQueue.add(PointType.ENEMYYELLOW);
         enemyQueue.add(PointType.ENEMYRED);
+        Enemy.setScaredBitmap(BitmapFactory.decodeResource(getContext().getResources(), R.drawable.scare_ghost));
         mMagenta.setBitmap(BitmapFactory.decodeResource(getContext().getResources(), R.drawable.ghost_0));
         mRed.setBitmap(BitmapFactory.decodeResource(getContext().getResources(), R.drawable.ghost_1));
         mGreen.setBitmap(BitmapFactory.decodeResource(getContext().getResources(), R.drawable.ghost_2));
@@ -259,8 +261,8 @@ public class GameView extends View {
         return paths;
     }
 
-    public ArrayList<Direction> getEnemyPath(Point enemyPoint, Direction dir) {
-        ArrayList<Direction> paths = new ArrayList<>();
+
+    public Direction opposite(Direction dir) {
         Direction skip = Direction.DOWN;
         switch (dir) {
             case UP:
@@ -276,6 +278,26 @@ public class GameView extends View {
                 skip = Direction.LEFT;
                 break;
         }
+        return skip;
+    }
+
+    public ArrayList<Direction> getEnemyPath(Point enemyPoint, Direction dir){
+        ArrayList<Direction> paths = new ArrayList<>();
+        Direction skip = opposite(dir);
+        /*switch (dir) {
+            case UP:
+                skip = Direction.DOWN;
+                break;
+            case DOWN:
+                skip = Direction.UP;
+                break;
+            case LEFT:
+                skip = Direction.RIGHT;
+                break;
+            case RIGHT:
+                skip = Direction.LEFT;
+                break;
+        }*/
 
         for (Direction direction : Direction.values()) {
             if (direction != skip) {
@@ -288,6 +310,16 @@ public class GameView extends View {
         return paths;
     }
 
+    public void playSound(int id) {
+        player = MediaPlayer.create(this.getContext(), id);
+        player.setOnCompletionListener(p1 -> p1.release());
+        player.setVolume(.5f * GameActivity.volume/5f, .5f * GameActivity.volume/5f);
+        player.start();
+        if (id == R.raw.lose) {
+            while (player.isPlaying());
+        }
+        return;
+    }
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -306,7 +338,11 @@ public class GameView extends View {
                 switch (getPoint(x, y).type) {
                     case PELLET:
                         mPaint.setStyle(Paint.Style.FILL);
-                        mPaint.setColor(Color.WHITE);
+                        if (mPacMan.getDouble()) {
+                            mPaint.setColor(Color.parseColor("#FC9D03"));
+                        } else {
+                            mPaint.setColor(Color.WHITE);
+                        }
                         canvas.drawRect(left + (mBoxSize / 2f - ssize / 2), top + (mBoxSize / 2f - ssize / 2), left + (mBoxSize / 2f + ssize / 2), top + (mBoxSize / 2f + ssize / 2), mPaint);
                         break;
                     case DOUBLE_PELLET:
@@ -351,8 +387,11 @@ public class GameView extends View {
                 top = enemies[i].y;
                 bottom = top + mBoxSize;
                 //canvas.draw
-                canvas.drawBitmap(enemies[i].getBitmap(), null, new RectF(left, top, right, bottom), mPaint);
-
+                if (!mPacMan.getSuper()) {
+                    canvas.drawBitmap(enemies[i].getBitmap(), null, new RectF(left, top, right, bottom), mPaint);
+                } else {
+                    canvas.drawBitmap(Enemy.scareSprite, null, new RectF(left, top, right, bottom), mPaint);
+                }
             }
         }
 
