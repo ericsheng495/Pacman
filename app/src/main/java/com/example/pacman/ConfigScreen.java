@@ -20,7 +20,9 @@ public class ConfigScreen extends AppCompatActivity {
     private ImageButton lessDifficulty;
     private TextView difficultyLevel;
     private TextView difficultyDescription;
-    private String[] diffArr = {"3 Ghosts, Slow Speed, 5 Lives", "4 Ghosts, Normal Speed, 3 Lives", "5 Ghosts, High Speed, 2 Lives"};
+    private String[] diffArr = {"3 Lives, +0 bonus points/pellet",
+            "2 Lives, +25 bonus points/pellet",
+            "1 Life, +50 bonus points/pellet"};
     private String name;
     private EditText nameInput;
     private Button nextButton;

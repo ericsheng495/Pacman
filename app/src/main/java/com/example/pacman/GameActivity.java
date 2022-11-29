@@ -63,7 +63,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         livesText.setText("Lives: " + lives[difficulty]);
 
         TextView playerNameText = findViewById(R.id.playerNameText);
-        playerNameText.setText(name);
+        playerNameText.setText("Name: " + name);
 
         TextView scoreText = findViewById(R.id.scoreText);
         scoreText.setText(getString(R.string.score));
@@ -71,8 +71,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         TextView difficultText = findViewById(R.id.difficultText);
         difficultText.setText("Difficulty: " + difficultyLevels[difficulty]);
 
-        TextView roundText = findViewById(R.id.roundText);
-        roundText.setText(getString(R.string.round));
+        //TextView roundText = findViewById(R.id.roundText);
+        //roundText.setText(getString(R.string.round));
 
         /*ImageView spriteView = (ImageView) findViewById(R.id.spriteInGame);
         spriteView.setImageResource(getResources().getIdentifier("@android:drawable/" + sprite, null, getPackageName()));*/
@@ -115,7 +115,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         };*/
         mGameView = findViewById(R.id.game_view);
         Bitmap pacman_sprite = BitmapFactory.decodeResource(getResources(), sprite);
-        pacman = new Pacman(mGameView, pacman_sprite);
+        pacman = new Pacman(mGameView, pacman_sprite, 3 - difficulty);
         mGameView.init(pacman);
         startGame();
     }

@@ -23,9 +23,9 @@ public class Pacman {
     public float x = 0;
     public float y = 0;
     private int enemiesKilled = 0;
+    private int scoreAdditive = 0;
 
-
-    public Pacman(GameView view, Bitmap sprite) {
+    public Pacman(GameView view, Bitmap sprite, int lives) {
         //RESET TO FALSE
         this.superState = false;
         //RESET TO 0
@@ -39,6 +39,8 @@ public class Pacman {
         this.view = view;
         this.sprite = sprite;
         this.scoreMultiplier = 1;
+        this.lives = lives;
+        scoreAdditive = 3 - lives;
     }
 
     public void setLocation(int x, int y) {
@@ -160,7 +162,7 @@ public class Pacman {
             switch (currentBlock.type) {
                 case PELLET:
                     //Add Points
-                    score += (50 * this.scoreMultiplier);
+                    score += ((50 + 25 * scoreAdditive) * this.scoreMultiplier);
                     //lives = 0; //debug
                     view.pelletCount--;
                     view.playSound(R.raw.pellet);
@@ -168,7 +170,7 @@ public class Pacman {
                     break;
                 case DOUBLE_PELLET:
                     //Add Points + Super
-                    score += (100 * this.scoreMultiplier);
+                    score += ((100 + 25 * scoreAdditive) * this.scoreMultiplier);
                     if (!doubleScoreState) this.scoreMultiplier = 2;
                     doubleScoreState = true;
                     superScoreTimer = 250;
@@ -177,7 +179,7 @@ public class Pacman {
                     break;
                 case SPEED_PELLET:
                     //Add Points + Super
-                    score += (100 * this.scoreMultiplier);
+                    score += ((100 + 25 * scoreAdditive) * this.scoreMultiplier);
                     superSpeedTimer = 250;
                     if (!doubleSpeedState) this.vel *= 2;
                     doubleSpeedState = true;
@@ -186,7 +188,7 @@ public class Pacman {
                     break;
                 case INVINCIBLE_PELLET:
                     //Add Points + Super
-                    score += (100 * this.scoreMultiplier);
+                    score += ((100 + 25 * scoreAdditive) * this.scoreMultiplier);
                     superState = true;
                     superTimer = 250;
                     view.pelletCount--;
