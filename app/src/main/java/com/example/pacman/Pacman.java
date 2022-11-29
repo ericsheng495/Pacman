@@ -33,7 +33,7 @@ public class Pacman {
         this.score = 0;
         this.direction = Direction.RIGHT;
         this.doubleSpeedState = false;
-        this.lives = 1;
+        this.lives = 3;
         this.superSpeedTimer = 0;
         this.superScoreTimer = 0;
         this.view = view;

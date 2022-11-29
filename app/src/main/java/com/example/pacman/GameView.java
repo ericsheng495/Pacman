@@ -100,7 +100,7 @@ public class GameView extends View {
             }
         }
 
-        Map_Layout map_layout = new Map_Layout();
+        Map_Layout map_layout = new Map_Layout(2);
 
         int[][] mLayout = map_layout.getMap_layout();
 

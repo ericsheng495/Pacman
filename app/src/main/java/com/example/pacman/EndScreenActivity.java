@@ -29,7 +29,7 @@ public class EndScreenActivity extends AppCompatActivity {
     String[] scores = new String[11];
     int scoreNum = 0;
     int enemiesKilled;
-
+    int time;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +38,7 @@ public class EndScreenActivity extends AppCompatActivity {
         name = prev_intent.getStringExtra("Name");
         score = prev_intent.getIntExtra("Score", 0);
         enemiesKilled = prev_intent.getIntExtra("EnemiesKilled", 0);
+        time = prev_intent.getIntExtra("Time", 0);
         findViewById(R.id.restartButton).setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), ConfigScreen.class);
             startActivity(intent);
@@ -83,7 +84,7 @@ public class EndScreenActivity extends AppCompatActivity {
         layoutParams.gravity = Gravity.CENTER_HORIZONTAL;
         layoutParams.setMargins(0, 60, 0, 0);
         text.setLayoutParams(layoutParams);
-        text.setText(String.format("Your score: %d", score));
+        text.setText(String.format("Your score: %d | Time: %d", score, time));
         layout.addView(text);
 
         //Enemies

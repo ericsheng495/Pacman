@@ -30,6 +30,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     Direction nextDirection = Direction.RIGHT;
     String name;
     boolean threadStop = false;
+    int time_counter = 0;
+    int counter = 0;
     //GreenGhost greenGhost = new GreenGhost();
 
     Boolean gameStart = new Boolean(false);
@@ -153,6 +155,10 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         mHandler.post(mGameView::invalidate);
                     }
                     count++;
+                    if (count == 30) {
+                        time_counter++;
+                        count = 0;
+                    }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -164,6 +170,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                     intent.putExtra("Score", pacman.score);
                     intent.putExtra("EnemiesKilled", pacman.getEnemiesKilled());
                     intent.putExtra("Win", mGameView.isGameWin());
+                    intent.putExtra("Time", time_counter);
                     startActivity(intent);
                 });
             }
